@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <base href="https://mi-linux.wlv.ac.uk/~2423855/student-portal">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="styles.css">
-    <title>Student Portal</title>
-</head>
+<?php
+include("credentials/db.php");
+include("templates/header.php");
+?>
 
 <body>
-    <a href="student-portal/index.html">home</a>
+    <a href="index.php">home</a>
     <div class="club-pannel">
         <h1>Club Name</h1>
         <p>club summary</p>
@@ -37,4 +30,5 @@
         <p>club summary</p>
     </div>
 </body>
-</html>
+
+<?php include("templates/footer.php");?>
