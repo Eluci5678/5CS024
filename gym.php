@@ -1,10 +1,9 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 include("credentials/db.php");
-include("templates/header.php");
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
+$twig = new \Twig\Environment($loader);
+
+echo $twig->render('gym.twig', [
+]);
 ?>
-
-<body>
-    <a href="index.php">home</a>
-</body>
-
-<?php include("templates/footer.php");?>

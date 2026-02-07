@@ -1,45 +1,34 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 include("credentials/db.php");
-include("templates/header.php");
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
+$twig = new \Twig\Environment($loader);
 
 $stmt = $mysqli->prepare("
-    SELECT 
-        u.user_id,
-        u.name,
-        COALESCE(SUM(a.attendance_status), 0) AS attendance_score
-    FROM users u
-    LEFT JOIN attendance_records a
-        ON a.user_id = u.user_id
-    GROUP BY u.user_id, u.name
-    ORDER BY attendance_score DESC, u.name ASC
+    SELECT
+        users.user_id,
+        users.name,
+        SUM(attendance_records.attendance_status) AS attendance_score
+    FROM users
+    LEFT JOIN attendance_records
+        ON attendance_records.user_id = users.user_id
+    GROUP BY
+        users.user_id,
+        users.name
+    ORDER BY
+        attendance_score DESC
 ");
-
+if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
 $stmt->execute();
 $result = $stmt->get_result();
+$users = $result->fetch_all(MYSQLI_ASSOC);
+
+$rank = 1;
+foreach ($users as &$user) {
+    $user['rank'] = $rank++;
+}
+
+echo $twig->render('leaderboard.twig', [
+    'users' => $users
+]);
 ?>
-
-<body>
-    <a href="index.php">home</a>
-
-    <table>
-        <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Attendance</th>
-        </tr>
-
-        <?php
-        $rank = 1;
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>{$rank}</td>";
-            echo "<td>{$row['name']}</td>";
-            echo "<td>{$row['attendance_score']}</td>";
-            echo "</tr>";
-            $rank++;
-        }
-        ?>
-    </table>
-</body>
-
-<?php include("templates/footer.php"); ?>

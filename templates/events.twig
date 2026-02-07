@@ -1,0 +1,14 @@
+{% include 'header.twig' %}
+
+<body>
+    <a href="index.php">home</a>
+
+    {% for row in data %}
+        <div class="event-pannel">
+            <h1>{{ row.title }}</h1>
+            <p>{{ row.events_description }}</p>
+        </div>
+    {% endfor %}
+</body>
+
+{% include 'footer.twig' %}

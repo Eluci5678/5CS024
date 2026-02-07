@@ -1,0 +1,23 @@
+{% include 'header.twig' %}
+
+<body>
+    <a href="index.php">home</a>
+
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Attendance</th>
+        </tr>
+
+        {% for user in users %}
+            <tr>
+                <td>{{ user.rank }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.attendance_score }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+
+{% include 'footer.twig' %}

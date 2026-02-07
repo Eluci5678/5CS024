@@ -1,20 +1,15 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 include("credentials/db.php");
-include("templates/header.php");
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
+$twig = new \Twig\Environment($loader);
 
 $stmt = $mysqli->prepare("SELECT * FROM events");
+if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
 $stmt->execute();
 $result = $stmt->get_result();
+
+echo $twig->render('events.twig', [
+    'data' => $result
+]);
 ?>
-
-<body>
-    <a href="index.php">home</a>
-    <?php while ($row = $result->fetch_assoc()): ?>
-        <div class="event-pannel">
-            <h1><?=($row['title'])?></h1>
-            <p><?=($row['events_description'])?></p>
-        </div>
-    <?php endwhile; ?>
-</body>
-
-<?php include("templates/footer.php");?>

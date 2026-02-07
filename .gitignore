@@ -1,1 +1,4 @@
 credentials
+vendor
+composer.json
+composer.lock
