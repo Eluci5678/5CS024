@@ -4,6 +4,8 @@ include("credentials/db.php");
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
 
+//fuck you aaron 🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕🖕
+
 $links = [
     ['href' => 'leaderboard.php', 'label' => 'leaderboard'],
     ['href' => 'transport.php', 'label' => 'transport'],
