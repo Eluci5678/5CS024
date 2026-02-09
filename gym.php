@@ -13,6 +13,8 @@ if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
 $stmt->execute();
 $result = $stmt->get_result();
 
+$twig->addGlobal('csrf_token', csrf_token());
+
 echo $twig->render('gym.twig', [
     'data' => $result
 ]);
