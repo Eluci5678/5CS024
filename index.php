@@ -6,6 +6,9 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('csrf_token', csrf_token());
 
+//:) yay!! 
+//calum was here XD
+
 $links = [
     ['href' => 'leaderboard.php', 'label' => 'leaderboard'],
     ['href' => 'transport.php', 'label' => 'transport'],
