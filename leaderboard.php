@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/security/bootstrap.php';
 require_once __DIR__ . '/vendor/autoload.php';
+include("php/user.php");
 include("credentials/db.php");
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
@@ -31,6 +32,7 @@ foreach ($users as &$user) {
 }
 
 echo $twig->render('leaderboard.twig', [
+    'user' => $user,
     'users' => $users
 ]);
 ?>

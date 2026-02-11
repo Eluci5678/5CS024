@@ -7,13 +7,14 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('csrf_token', csrf_token());
 
-$stmt = $mysqli->prepare("SELECT * FROM transit_info");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
-$stmt->execute();
-$result = $stmt->get_result();
+$warning_code = isset($_GET['error']) ? (int)$_GET['error'] : 0;
+$warning_message = "";
 
-echo $twig->render('transport.twig', [
+if ($warning_code == 1){
+    $warning_message = "Incorrect username or password";
+}
+
+echo $twig->render('login.twig', [
     'user' => $user,
-    'data' => $result
+    'warning' => $warning_message,
 ]);
-?>

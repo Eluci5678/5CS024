@@ -1,0 +1,33 @@
+{% include 'header.twig' %}
+{% include 'top-bar.twig' %}
+
+<div class="MainContent">
+	<div class="login-page">
+		<h1>Sign Up</h1>
+		<form action="php/validate-signup.php" method="post">
+			<div class="mb-3">
+				<label for="User" class="form-label">Username</label>
+				<input type="text" class="form-control" id="User" name="User" required>
+			</div>
+			<div class="mb-3">
+				<label for="Email" class="form-label">Email</label>
+				<input type="text" class="form-control" id="Email" name="Email" required>
+			</div>
+			<div class="mb-3">
+				<label for="Password" class="form-label">Password</label>
+				<input type="password" class="form-control" id="Password" name="Password" required>
+			</div>
+			<div class="mb-3">
+				<label for="ConfirmPassword" class="form-label">Confirm Password</label>
+				<input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" required>
+			</div>
+			<div class="g-recaptcha" data-sitekey="6LfFOhosAAAAAFvqgmtwLTl0-BlROeoBxbO4BZN_"></div>
+			<button type="submit" class="btn btn-primary">Sign Up</button>
+		</form>
+		{% if warning %}
+			<p>{{warning}}</p>
+		{% endif %}
+	</div>
+</div>
+
+{% include 'footer.twig' %}

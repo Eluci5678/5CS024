@@ -13,6 +13,7 @@ header(
 	"img-src 'self' data:; " .
     "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
     "script-src 'self' https://cdn.jsdelivr.net; " .
+    "font-src 'self' https://cdn.jsdelivr.net; " .
 	"object-src 'none'; " .
 	"base-uri 'self'; " .
 	"frame-ancestors 'none' "
