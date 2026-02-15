@@ -7,13 +7,12 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('csrf_token', csrf_token());
 
-$stmt = $mysqli->prepare("SELECT * FROM gym_opening_times");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
-$stmt->execute();
-$result = $stmt->get_result();
+if (!$user) {
+    header("Location: login.php");
+    exit;
+}
 
-echo $twig->render('gym.twig', [
+echo $twig->render('dashboard.twig', [
     'user' => $user,
-    'data' => $result
 ]);
 ?>

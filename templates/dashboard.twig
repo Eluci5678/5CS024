@@ -1,0 +1,97 @@
+{% include 'header.twig' %}
+{% include 'top-bar.twig'%}
+
+<body>
+
+<h2>Create Transport Route</h2>
+<form method="POST" action="php/dashboard-upload/transport.php">
+    <label>Route Name</label>
+    <input type="text" name="route_name" required>
+
+    <label>Schedule</label>
+    <input type="text" name="schedule" required>
+
+    <button type="submit">Create</button>
+</form>
+
+<h2>Create Gym Opening Time</h2>
+<form method="POST" action="php/dashboard-upload/gym.php">
+    <label>Campus Name</label>
+    <input type="text" name="campus_name" required>
+
+    <label>Day of Week</label>
+    <select name="day_of_week" required>
+        <option value="">Select</option>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+        <option>Sunday</option>
+    </select>
+
+    <label>Opens At</label>
+    <input type="time" name="opens_at" required>
+
+    <label>Closes At</label>
+    <input type="time" name="closes_at" required>
+
+    <label>Note</label>
+    <textarea name="note"></textarea>
+
+    <label>Source Reference</label>
+    <input type="text" name="source_ref">
+
+    <button type="submit">Create</button>
+</form>
+
+<h2>Create Club</h2>
+<form method="POST" action="php/dashboard-upload/club.php">
+    <label>Club Name</label>
+    <input type="text" name="club_name" required>
+
+    <label>Description</label>
+    <textarea name="description" required></textarea>
+
+    <label>Owner ID</label>
+    <input type="number" name="owner_id" required>
+
+    <label>Schedule</label>
+    <input type="text" name="schedule" required>
+
+    <button type="submit">Create</button>
+</form>
+
+<h2>Create Event</h2>
+<form method="POST" action="php/dashboard-upload/event.php">
+    <label>Title</label>
+    <input type="text" name="title" required>
+
+    <label>Description</label>
+    <textarea name="events_description" required></textarea>
+
+    <label>Event Type</label>
+    <input type="text" name="event_type" required>
+
+    <label>Associated Club ID</label>
+    <input type="number" name="associated_club" required>
+
+    <label>Start Time</label>
+    <input type="datetime-local" name="start_time" required>
+
+    <label>End Time</label>
+    <input type="datetime-local" name="end_time" required>
+
+    <label>Expiration Date</label>
+    <input type="datetime-local" name="expiration_date" required>
+
+    <label>Created By (User ID)</label>
+    <input type="number" name="created_by" required>
+
+    <button type="submit">Create</button>
+</form>
+
+</body>
+
+{% include 'footer.twig' %}

@@ -5,6 +5,7 @@
 
     <div class="d-flex align-items-center gap-2">
         {% if user %}
+            <a class="btn btn-primary" href="dashboard.php">Dashboard</a>
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle text-white" href="#" style="padding: 6px 0px 6px 0px" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">{{ user.name }}</a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
