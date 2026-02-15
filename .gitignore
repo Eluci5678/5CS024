@@ -1,4 +1,4 @@
-credentials
+credentials/db.php
 vendor
 composer.json
 composer.lock
