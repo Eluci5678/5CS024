@@ -27,8 +27,8 @@ $result = $stmt->get_result();
 $users = $result->fetch_all(MYSQLI_ASSOC);
 
 $rank = 1;
-foreach ($users as &$user) {
-    $user['rank'] = $rank++;
+foreach ($users as &$u) {
+    $u['rank'] = $rank++;
 }
 
 echo $twig->render('leaderboard.twig', [

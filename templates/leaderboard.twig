@@ -11,11 +11,11 @@
             <th>Attendance</th>
         </tr>
 
-        {% for user in users %}
+        {% for u in users %}
             <tr>
-                <td>{{ user.rank }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.attendance_score }}</td>
+                <td>{{ u.rank }}</td>
+                <td>{{ u.name }}</td>
+                <td>{{ u.attendance_score }}</td>
             </tr>
         {% endfor %}
     </table>
