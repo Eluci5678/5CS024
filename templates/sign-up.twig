@@ -5,6 +5,9 @@
 	<div class="login-page">
 		<h1>Sign Up</h1>
 		<form action="php/validate-signup.php" method="post">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
 			<div class="mb-3">
 				<label for="User" class="form-label">Username</label>
 				<input type="text" class="form-control" id="User" name="User" required>
