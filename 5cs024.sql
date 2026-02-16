@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0-dev
+-- version 5.2.1deb3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Feb 02, 2026 at 03:07 PM
--- Server version: 8.0.44-0ubuntu0.22.04.2
--- PHP Version: 8.4.16
+-- Host: localhost:3306
+-- Generation Time: Feb 16, 2026 at 11:59 AM
+-- Server version: 8.0.45-0ubuntu0.24.04.1
+-- PHP Version: 8.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db2218870`
+-- Database: `5cs024`
 --
 
 -- --------------------------------------------------------
@@ -61,6 +61,42 @@ INSERT INTO `buildings` (`building_id`, `building_initials`, `building_name`, `c
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `campus_opening_times`
+--
+
+CREATE TABLE `campus_opening_times` (
+  `id` bigint UNSIGNED NOT NULL,
+  `campus_name` varchar(80) NOT NULL,
+  `day_of_week` varchar(10) NOT NULL,
+  `opens_at` time NOT NULL,
+  `closes_at` time NOT NULL,
+  `note` text,
+  `source_ref` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `campus_opening_times`
+--
+
+INSERT INTO `campus_opening_times` (`id`, `campus_name`, `day_of_week`, `opens_at`, `closes_at`, `note`, `source_ref`) VALUES
+(1, 'Walsall Campus', 'Monday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(2, 'Walsall Campus', 'Tuesday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(3, 'Walsall Campus', 'Wednesday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(4, 'Walsall Campus', 'Thursday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(5, 'Walsall Campus', 'Friday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(6, 'Walsall Campus', 'Saturday', '08:00:00', '18:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(7, 'Walsall Campus', 'Sunday', '08:00:00', '18:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(8, 'Walsall Campus', 'Monday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(9, 'Walsall Campus', 'Tuesday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(10, 'Walsall Campus', 'Wednesday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(11, 'Walsall Campus', 'Thursday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(12, 'Walsall Campus', 'Friday', '06:30:00', '22:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(13, 'Walsall Campus', 'Saturday', '08:00:00', '18:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided'),
+(14, 'Walsall Campus', 'Sunday', '08:00:00', '18:00:00', 'Opening hours can change around bank holidays.', 'Screenshot you provided');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `clubs`
 --
 
@@ -80,7 +116,8 @@ CREATE TABLE `clubs` (
 INSERT INTO `clubs` (`club_id`, `club_name`, `description`, `owner_id`, `schedule`, `club_creation_date`) VALUES
 (1, 'Computer Science Society', 'A club for students interested in coding, AI, and tech careers.', 1, 'Every Wednesday 6PM', '2026-02-02 14:38:57'),
 (2, 'Football Club', 'University football training and competitive matches.', 2, 'Tuesdays & Fridays 5PM', '2026-02-02 14:38:57'),
-(3, 'Entrepreneurship Club', 'Helping students build startups and side hustles.', 3, 'Mondays 7PM', '2026-02-02 14:38:57');
+(3, 'Entrepreneurship Club', 'Helping students build startups and side hustles.', 3, 'Mondays 7PM', '2026-02-02 14:38:57'),
+(4, 'A New Club', 'Yeaaaah', 2, 'EVERY DAY', '2026-02-15 14:00:06');
 
 -- --------------------------------------------------------
 
@@ -107,7 +144,73 @@ CREATE TABLE `events` (
 INSERT INTO `events` (`event_id`, `title`, `events_description`, `event_type`, `associated_club`, `start_time`, `end_time`, `expiration_date`, `created_by`) VALUES
 (1, 'Hackathon Night', 'Overnight coding event with prizes.', 'Workshop', 1, '2026-02-10 18:00:00', '2026-02-11 08:00:00', '2026-02-12 00:00:00', 1),
 (2, 'Football Trials', 'Open trials for new players.', 'Sports', 2, '2026-02-15 16:00:00', '2026-02-15 18:00:00', '2026-02-16 00:00:00', 2),
-(3, 'Startup Pitch Night', 'Pitch your business idea to judges.', 'Networking', 3, '2026-02-20 17:30:00', '2026-02-20 20:00:00', '2026-02-21 00:00:00', 3);
+(3, 'Startup Pitch Night', 'Pitch your business idea to judges.', 'Networking', 3, '2026-02-20 17:30:00', '2026-02-20 20:00:00', '2026-02-21 00:00:00', 3),
+(4, 'New Eevvent', 'yeayeyyah', 'idk', 2, '2025-02-12 12:03:00', '2027-08-12 12:35:00', '2029-03-12 12:01:00', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `exercise_classes`
+--
+
+CREATE TABLE `exercise_classes` (
+  `id` bigint UNSIGNED NOT NULL,
+  `class_date` date DEFAULT NULL,
+  `day_of_week` varchar(10) NOT NULL,
+  `class_name` varchar(120) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `campus_name` varchar(80) NOT NULL,
+  `location` varchar(160) DEFAULT NULL,
+  `source_url` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `exercise_classes`
+--
+
+INSERT INTO `exercise_classes` (`id`, `class_date`, `day_of_week`, `class_name`, `start_time`, `end_time`, `campus_name`, `location`, `source_url`) VALUES
+(1, '2024-09-17', 'Tuesday', 'WLV HIIT', '07:00:00', '07:45:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(2, '2024-09-17', 'Tuesday', 'Functional Fit', '09:30:00', '10:15:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(3, '2024-09-17', 'Tuesday', 'Flex & Stretch', '12:15:00', '12:55:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(4, '2024-09-17', 'Tuesday', 'Pilates', '13:00:00', '13:55:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(5, '2024-09-17', 'Tuesday', 'Total Body Fitness', '18:00:00', '18:55:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(6, '2024-09-19', 'Thursday', 'Abs Blast', '07:00:00', '07:45:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/'),
+(7, '2024-09-19', 'Thursday', 'Body Conditioning', '09:30:00', '10:30:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/'),
+(8, '2024-09-19', 'Thursday', 'Functional Fit', '12:15:00', '12:45:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/'),
+(9, '2024-09-19', 'Thursday', 'Yoga', '17:15:00', '18:10:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/'),
+(10, '2024-09-17', 'Tuesday', 'WLV HIIT', '07:00:00', '07:45:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(11, '2024-09-17', 'Tuesday', 'Functional Fit', '09:30:00', '10:15:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(12, '2024-09-17', 'Tuesday', 'Flex & Stretch', '12:15:00', '12:55:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(13, '2024-09-17', 'Tuesday', 'Pilates', '13:00:00', '13:55:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(14, '2024-09-17', 'Tuesday', 'Total Body Fitness', '18:00:00', '18:55:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9521/'),
+(15, '2024-09-19', 'Thursday', 'Abs Blast', '07:00:00', '07:45:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/'),
+(16, '2024-09-19', 'Thursday', 'Body Conditioning', '09:30:00', '10:30:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/'),
+(17, '2024-09-19', 'Thursday', 'Functional Fit', '12:15:00', '12:45:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/'),
+(18, '2024-09-19', 'Thursday', 'Yoga', '17:15:00', '18:10:00', 'Walsall Campus', 'Sports Centre, Walsall Campus', 'https://www.wolvesunion.org/ents/event/9539/');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gym_opening_times`
+--
+
+CREATE TABLE `gym_opening_times` (
+  `id` bigint UNSIGNED NOT NULL,
+  `campus_name` varchar(80) NOT NULL,
+  `day_of_week` varchar(10) NOT NULL,
+  `opens_at` time NOT NULL,
+  `closes_at` time NOT NULL,
+  `note` text,
+  `source_ref` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `gym_opening_times`
+--
+
+INSERT INTO `gym_opening_times` (`id`, `campus_name`, `day_of_week`, `opens_at`, `closes_at`, `note`, `source_ref`) VALUES
+(1, 'Campus', 'Wednesday', '12:12:00', '04:05:00', ':)', 'idk');
 
 -- --------------------------------------------------------
 
@@ -180,7 +283,9 @@ INSERT INTO `transit_info` (`transit_id`, `route_name`, `schedule`, `last_update
 (3, 'Telford to Wolverhampton', 'Every 30 minutes (08:00–18:00)', '2026-02-02 14:38:57'),
 (4, 'Telford to Walsall', 'Every 30 minutes (08:00–18:00)', '2026-02-02 14:38:57'),
 (5, 'Walsall to Wolverhampton', 'Every 30 minutes (08:00–18:00)', '2026-02-02 14:38:57'),
-(6, 'Walsall to Telford', 'Every 30 minutes (08:00–18:00)', '2026-02-02 14:38:57');
+(6, 'Walsall to Telford', 'Every 30 minutes (08:00–18:00)', '2026-02-02 14:38:57'),
+(7, 'Telford to Wolverhampton', 'idk', '2026-02-15 13:49:55'),
+(8, 'bus', 'somethinh', '2026-02-15 23:54:00');
 
 -- --------------------------------------------------------
 
@@ -206,7 +311,11 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password_hash`, `account_creat
 (3, 'User 3', 'user3@wlv.ac.uk', 'hashed_pw_3', '2026-02-02 14:38:57'),
 (4, 'User 4', 'user4@wlv.ac.uk', 'hashed_pw_4', '2026-02-02 14:38:57'),
 (5, 'User 5', 'user5@wlv.ac.uk', 'hashed_pw_5', '2026-02-02 14:38:57'),
-(6, 'User 6', 'user6@wlv.ac.uk', 'hashed_pw_6', '2026-02-02 14:38:57');
+(6, 'User 6', 'user6@wlv.ac.uk', 'hashed_pw_6', '2026-02-02 14:38:57'),
+(7, 'test', 'test@email.com', '$2y$10$OqeeM1/T1V6vAdekuv1fWeyzyNcHDY0.Dv2n99b7dL0zYvmWU1VLe', '2026-02-11 10:38:54'),
+(8, 'test2', 'test2@email.com', 'unhashed', '2026-02-11 17:36:06'),
+(9, 'test3', 'test3@email.com', 'test', '2026-02-14 12:10:54'),
+(10, 'new user', 'email@email20.com', '$2y$10$GFbMSomGYMwCu4qkLRE2x.FaWbvYHAfBj0fQJJgy2aLbsvtN7kmJ2', '2026-02-15 23:53:35');
 
 -- --------------------------------------------------------
 
@@ -273,6 +382,13 @@ ALTER TABLE `buildings`
   ADD PRIMARY KEY (`building_id`);
 
 --
+-- Indexes for table `campus_opening_times`
+--
+ALTER TABLE `campus_opening_times`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `clubs`
 --
 ALTER TABLE `clubs`
@@ -286,6 +402,20 @@ ALTER TABLE `events`
   ADD PRIMARY KEY (`event_id`),
   ADD KEY `fk_event_club` (`associated_club`),
   ADD KEY `fk_event_creator` (`created_by`);
+
+--
+-- Indexes for table `exercise_classes`
+--
+ALTER TABLE `exercise_classes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `gym_opening_times`
+--
+ALTER TABLE `gym_opening_times`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `notifications`
@@ -359,16 +489,34 @@ ALTER TABLE `buildings`
   MODIFY `building_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `campus_opening_times`
+--
+ALTER TABLE `campus_opening_times`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `clubs`
 --
 ALTER TABLE `clubs`
-  MODIFY `club_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `club_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `event_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `exercise_classes`
+--
+ALTER TABLE `exercise_classes`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `gym_opening_times`
+--
+ALTER TABLE `gym_opening_times`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -386,13 +534,13 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT for table `transit_info`
 --
 ALTER TABLE `transit_info`
-  MODIFY `transit_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `transit_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
