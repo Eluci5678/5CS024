@@ -4,21 +4,61 @@
 <body>
 
 <h2>Create Transport Route</h2>
-<form method="POST" action="php/dashboard-upload/transport.php">
+
+{% for transit in transit_data %}
+<form method="POST" action="php/dashboard/transport.php">
+    <input type="hidden" name="id" value="{{ transit.transit_id }}">
+    <label>Route Name</label>
+    <input type="text" name="route_name" value="{{ transit.route_name }}" required>
+    <label>Schedule</label>
+    <input type="text" name="schedule" value="{{ transit.schedule }}" required>
+    <button type="submit">Update</button>
+    <button type="submit" name="delete" value="1">Delete</button>
+</form>
+{% endfor %}
+
+<form method="POST" action="php/dashboard/transport.php">
     <label>Route Name</label>
     <input type="text" name="route_name" required>
-
     <label>Schedule</label>
     <input type="text" name="schedule" required>
-
     <button type="submit">Create</button>
 </form>
 
 <h2>Create Gym Opening Time</h2>
-<form method="POST" action="php/dashboard-upload/gym.php">
+
+{% for gym in gym_data %}
+<form method="POST" action="php/dashboard/gym.php">
+    <input type="hidden" name="id" value="{{ gym.id }}">
+    <label>Campus Name</label>
+    <input type="text" name="campus_name" value="{{ gym.campus_name }}" required>
+    <label>Day of Week</label>
+    <select name="day_of_week" required>
+        <option value="">Select</option>
+        <option {% if gym.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
+        <option {% if gym.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+        <option {% if gym.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+        <option {% if gym.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
+        <option {% if gym.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
+        <option {% if gym.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
+        <option {% if gym.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
+    </select>
+    <label>Opens At</label>
+    <input type="time" name="opens_at" value="{{ gym.opens_at }}" required>
+    <label>Closes At</label>
+    <input type="time" name="closes_at" value="{{ gym.closes_at }}" required>
+    <label>Note</label>
+    <textarea name="note">{{ gym.note }}</textarea>
+    <label>Source Reference</label>
+    <input type="text" name="source_ref" value="{{ gym.source_ref }}">
+    <button type="submit">Update</button>
+    <button type="submit" name="delete" value="1">Delete</button>
+</form>
+{% endfor %}
+
+<form method="POST" action="php/dashboard/gym.php">
     <label>Campus Name</label>
     <input type="text" name="campus_name" required>
-
     <label>Day of Week</label>
     <select name="day_of_week" required>
         <option value="">Select</option>
@@ -30,65 +70,90 @@
         <option>Saturday</option>
         <option>Sunday</option>
     </select>
-
     <label>Opens At</label>
     <input type="time" name="opens_at" required>
-
     <label>Closes At</label>
     <input type="time" name="closes_at" required>
-
     <label>Note</label>
     <textarea name="note"></textarea>
-
     <label>Source Reference</label>
     <input type="text" name="source_ref">
-
     <button type="submit">Create</button>
 </form>
 
 <h2>Create Club</h2>
-<form method="POST" action="php/dashboard-upload/club.php">
+
+{% for club in club_data %}
+<form method="POST" action="php/dashboard/club.php">
+    <input type="hidden" name="id" value="{{ club.club_id }}">
+    <label>Club Name</label>
+    <input type="text" name="club_name" value="{{ club.club_name }}" required>
+    <label>Description</label>
+    <textarea name="description" required>{{ club.description }}</textarea>
+    <label>Owner ID</label>
+    <input type="number" name="owner_id" value="{{ club.owner_id }}" required>
+    <label>Schedule</label>
+    <input type="text" name="schedule" value="{{ club.schedule }}" required>
+    <button type="submit">Update</button>
+    <button type="submit" name="delete" value="1">Delete</button>
+</form>
+{% endfor %}
+
+<form method="POST" action="php/dashboard/club.php">
     <label>Club Name</label>
     <input type="text" name="club_name" required>
-
     <label>Description</label>
     <textarea name="description" required></textarea>
-
     <label>Owner ID</label>
     <input type="number" name="owner_id" required>
-
     <label>Schedule</label>
     <input type="text" name="schedule" required>
-
     <button type="submit">Create</button>
 </form>
 
 <h2>Create Event</h2>
-<form method="POST" action="php/dashboard-upload/event.php">
+
+{% for event in event_data %}
+<form method="POST" action="php/dashboard/event.php">
+    <input type="hidden" name="id" value="{{ event.event_id }}">
+    <label>Title</label>
+    <input type="text" name="title" value="{{ event.title }}" required>
+    <label>Description</label>
+    <textarea name="events_description" required>{{ event.events_description }}</textarea>
+    <label>Event Type</label>
+    <input type="text" name="event_type" value="{{ event.event_type }}" required>
+    <label>Associated Club ID</label>
+    <input type="number" name="associated_club" value="{{ event.associated_club }}" required>
+    <label>Start Time</label>
+    <input type="datetime-local" name="start_time" value="{{ event.start_time|date('Y-m-d\\TH:i') }}" required>
+    <label>End Time</label>
+    <input type="datetime-local" name="end_time" value="{{ event.end_time|date('Y-m-d\\TH:i') }}" required>
+    <label>Expiration Date</label>
+    <input type="datetime-local" name="expiration_date" value="{{ event.expiration_date|date('Y-m-d\\TH:i') }}" required>
+    <label>Created By (User ID)</label>
+    <input type="number" name="created_by" value="{{ event.created_by }}" required>
+    <button type="submit">Update</button>
+    <button type="submit" name="delete" value="1">Delete</button>
+</form>
+{% endfor %}
+
+<form method="POST" action="php/dashboard/event.php">
     <label>Title</label>
     <input type="text" name="title" required>
-
     <label>Description</label>
     <textarea name="events_description" required></textarea>
-
     <label>Event Type</label>
     <input type="text" name="event_type" required>
-
     <label>Associated Club ID</label>
     <input type="number" name="associated_club" required>
-
     <label>Start Time</label>
     <input type="datetime-local" name="start_time" required>
-
     <label>End Time</label>
     <input type="datetime-local" name="end_time" required>
-
     <label>Expiration Date</label>
     <input type="datetime-local" name="expiration_date" required>
-
     <label>Created By (User ID)</label>
     <input type="number" name="created_by" required>
-
     <button type="submit">Create</button>
 </form>
 

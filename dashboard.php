@@ -12,7 +12,35 @@ if (!$user) {
     exit;
 }
 
+$stmt = $mysqli->prepare("SELECT * FROM transit_info");
+if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
+$stmt->execute();
+$result = $stmt->get_result();
+$transit_data = $result->fetch_all(MYSQLI_ASSOC);
+
+$stmt = $mysqli->prepare("SELECT * FROM gym_opening_times");
+if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
+$stmt->execute();
+$result = $stmt->get_result();
+$gym_data = $result->fetch_all(MYSQLI_ASSOC);
+
+$stmt = $mysqli->prepare("SELECT * FROM clubs");
+if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
+$stmt->execute();
+$result = $stmt->get_result();
+$club_data = $result->fetch_all(MYSQLI_ASSOC);
+
+$stmt = $mysqli->prepare("SELECT * FROM events");
+if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
+$stmt->execute();
+$result = $stmt->get_result();
+$event_data = $result->fetch_all(MYSQLI_ASSOC);
+
 echo $twig->render('dashboard.twig', [
     'user' => $user,
+    'transit_data' => $transit_data,
+    'gym_data' => $gym_data,
+    'club_data' => $club_data,
+    'event_data' => $event_data
 ]);
 ?>
