@@ -12,6 +12,12 @@ if (!$user) {
     exit;
 }
 
+$stmt = $mysqli->prepare("SELECT * FROM users");
+if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
+$stmt->execute();
+$result = $stmt->get_result();
+$user_data = $result->fetch_all(MYSQLI_ASSOC);
+
 $stmt = $mysqli->prepare("SELECT * FROM transit_info");
 if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
 $stmt->execute();
@@ -38,6 +44,7 @@ $event_data = $result->fetch_all(MYSQLI_ASSOC);
 
 echo $twig->render('dashboard.twig', [
     'user' => $user,
+    'user_data' => $user_data,
     'transit_data' => $transit_data,
     'gym_data' => $gym_data,
     'club_data' => $club_data,
