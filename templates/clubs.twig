@@ -5,10 +5,14 @@
     <a href="index.php">home</a>
 
     {% for row in data %}
-        <div class="club-pannel">
+        <div class="event-panel">
             <h1>{{ row.club_name }}</h1>
             <p>{{ row.description }}</p>
-            <a class="btn btn-primary" href="" role="button">Join</a>
+            {% if row.joined %}
+                <a class="btn btn-danger" href="php/student/register-item.php?type=club&id={{ row.club_id }}&action=leave" role="button">Leave</a>
+            {% else %}
+                <a class="btn btn-primary" href="php/student/register-item.php?type=club&id={{ row.club_id }}&action=join" role="button">Join</a>
+            {% endif %}
         </div>
     {% endfor %}
 </body>

@@ -5,10 +5,14 @@
     <a href="index.php">home</a>
 
     {% for row in data %}
-        <div class="event-pannel">
+        <div class="event-panel">
             <h1>{{ row.title }}</h1>
             <p>{{ row.events_description }}</p>
-            <a class="btn btn-primary" href="" role="button">Join</a>
+            {% if row.joined %}
+                <a class="btn btn-danger" href="" role="button">Leave</a>
+            {% else %}
+                <a class="btn btn-primary" href="" role="button">Join</a>
+            {% endif %}
         </div>
     {% endfor %}
 </body>
