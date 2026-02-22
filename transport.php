@@ -19,7 +19,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 echo $twig->render('transport.twig', [
-    'user' => $user,
-    'data' => $result
+    'user' => $_SESSION['user_id'] ?? null,
+    'warning' => $warning_message,
 ]);
 ?>
