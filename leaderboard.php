@@ -38,7 +38,7 @@ foreach ($users as &$u) {
 }
 
 echo $twig->render('leaderboard.twig', [
-    'user' => $user,
-    'users' => $users
+    'user' => $_SESSION['user_id'] ?? null,
+    'data' => $result
 ]);
 ?>
