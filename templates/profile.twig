@@ -8,6 +8,10 @@
     {% for club in clubs %}
         <p>{{ club.club_name }}</p>
     {% endfor %}
+    <h1>Joined Events</h1>
+    {% for event in events %}
+        <p>{{ event.title }}</p>
+    {% endfor %}
 </body>
 
 {% include 'footer.twig' %}

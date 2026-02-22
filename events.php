@@ -7,8 +7,19 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('csrf_token', csrf_token());
 
-$stmt = $mysqli->prepare("SELECT * FROM events");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
+if ($user) {
+    $stmt = $mysqli->prepare("
+        SELECT events.*, user_events.user_id AS joined
+        FROM events
+        LEFT JOIN user_events
+            ON events.event_id = user_events.event_id
+            AND user_events.user_id = ?
+    ");
+    $stmt->bind_param("i", $user['id']);
+} else {
+    $stmt = $mysqli->prepare("SELECT * FROM events");
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 

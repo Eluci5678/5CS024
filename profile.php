@@ -21,9 +21,21 @@ $stmt = $mysqli->prepare("
 ");
 $stmt->bind_param("i", $user['id']);
 $stmt->execute();
-$result = $stmt->get_result();
+$clubs = $stmt->get_result();
+
+$stmt = $mysqli->prepare("
+    SELECT events.*
+    FROM events
+    INNER JOIN user_events
+        ON events.event_id = user_events.event_id
+    WHERE user_events.user_id = ?
+");
+$stmt->bind_param("i", $user['id']);
+$stmt->execute();
+$events = $stmt->get_result();
 
 echo $twig->render('profile.twig', [
     'user' => $user,
-    'clubs' => $result
+    'clubs' => $clubs,
+    'events' => $events
 ]);

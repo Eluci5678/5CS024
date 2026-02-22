@@ -19,42 +19,49 @@ if (!$type || !$action || !is_numeric($id)) {
 switch ($type) {
     case 'club':
         if ($action === 'join') {
-            joinClub($id);
+            joinTarget($id, "user_clubs", "club_id", "clubs");
         } elseif ($action === 'leave') {
-            leaveClub($id);
+            leaveTarget($id, "user_clubs", "club_id", "clubs");
         }
         break;
-
+    case 'event':
+        if($action === 'join') {
+            joinTarget($id, "user_events", "event_id", "events");
+        } elseif ($action === 'leave') {
+            leaveTarget($id, "user_events", "event_id", "events");
+        }
+        break;
     default:
         exit;
 }
 
-function joinClub($id){
+function joinTarget($id, $table, $column, $redirect){
     global $mysqli, $user;
 
     $stmt = $mysqli->prepare("
-        INSERT INTO user_clubs (user_id, club_id)
+        INSERT INTO $table (user_id, $column)
         VALUES (?,?)
     ");
     $stmt->bind_param("ii", $user['id'], $id);
     $stmt->execute();
     $stmt->close();
 
-    header("Location: ../../clubs.php");
+    header("Location: ../../$redirect.php");
     exit;
 }
 
-function leaveClub($id){
+function leaveTarget($id, $table, $column, $redirect){
     global $mysqli, $user;
 
     $stmt = $mysqli->prepare("
-        DELETE FROM user_clubs
-        WHERE user_id = ? AND club_id = ?
+        DELETE FROM $table
+        WHERE user_id = ? AND $column = ?
     ");
     $stmt->bind_param("ii", $user['id'], $id);
     $stmt->execute();
     $stmt->close();
 
-    header("Location: ../../clubs.php");
+    header("Location: ../../$redirect.php");
     exit;
 }
+?>
