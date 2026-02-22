@@ -15,6 +15,6 @@ if ($warning_code == 1){
 }
 
 echo $twig->render('login.twig', [
-    'user' => $user,
+    'user' => $_SESSION['user_id'] ?? null,
     'warning' => $warning_message,
 ]);
