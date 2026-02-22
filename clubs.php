@@ -30,7 +30,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 echo $twig->render('clubs.twig', [
-    'user' => $user,
+    'user' => $_SESSION['user_id'] ?? null,
     'data' => $result
 ]);
 ?>
