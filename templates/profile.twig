@@ -1,0 +1,13 @@
+{% include 'header.twig' %}
+{% include 'top-bar.twig' %}
+
+<body>
+    <a href="index.php">home</a>
+
+    <h1>Joined Clubs</h1>
+    {% for club in clubs %}
+        <p>{{ club.club_name }}</p>
+    {% endfor %}
+</body>
+
+{% include 'footer.twig' %}
