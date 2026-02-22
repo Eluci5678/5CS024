@@ -19,7 +19,7 @@ $links = [
 ];
 
 echo $twig->render('index.twig', [
-    'user' => $_SESSION['user_id'] ?? null,
-    'data' => $result
+    'user' => $user,
+    'links' => $links
 ]);
 ?>
