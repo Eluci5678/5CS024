@@ -1,5 +1,11 @@
 <?php
 require_once __DIR__ . '/security/bootstrap.php';
+
+if (empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require_once __DIR__ . '/vendor/autoload.php';
 include("php/user.php");
 include("credentials/db.php");
@@ -32,7 +38,7 @@ foreach ($users as &$u) {
 }
 
 echo $twig->render('leaderboard.twig', [
-    'user' => $user,
-    'users' => $users
+    'user' => $_SESSION['user_id'] ?? null,
+    'data' => $result
 ]);
 ?>

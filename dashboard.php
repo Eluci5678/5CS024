@@ -1,5 +1,11 @@
 <?php
 require_once __DIR__ . '/security/bootstrap.php';
+
+if (empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require_once __DIR__ . '/vendor/autoload.php';
 include("php/user.php");
 include("credentials/db.php");
@@ -43,7 +49,7 @@ $result = $stmt->get_result();
 $event_data = $result->fetch_all(MYSQLI_ASSOC);
 
 echo $twig->render('dashboard.twig', [
-    'user' => $user,
+    'user' => $_SESSION['user_id'] ?? null,
     'user_data' => $user_data,
     'transit_data' => $transit_data,
     'gym_data' => $gym_data,

@@ -21,6 +21,6 @@ if ($warning_code == 3){
 }
 
 echo $twig->render('sign-up.twig', [
-    'user' => $user,
+    'user' => $_SESSION['user_id'] ?? null,
     'warning' => $warning_message,
 ]);
