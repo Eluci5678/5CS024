@@ -49,7 +49,7 @@ $result = $stmt->get_result();
 $event_data = $result->fetch_all(MYSQLI_ASSOC);
 
 echo $twig->render('dashboard.twig', [
-    'user' => $user,
+    'user' => $_SESSION['user_id'] ?? null,
     'user_data' => $user_data,
     'transit_data' => $transit_data,
     'gym_data' => $gym_data,
