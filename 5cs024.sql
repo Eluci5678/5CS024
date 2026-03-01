@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1deb3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Feb 23, 2026 at 02:55 PM
--- Server version: 8.0.45-0ubuntu0.24.04.1
--- PHP Version: 8.3.6
+-- Host: 127.0.0.1
+-- Generation Time: Mar 01, 2026 at 09:31 PM
+-- Server version: 8.0.44
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `5cs024`
+-- Database: `db2218870`
 --
 
 -- --------------------------------------------------------
@@ -1097,20 +1097,21 @@ CREATE TABLE `user_notifications` (
 
 CREATE TABLE `user_roles` (
   `user_id` int NOT NULL,
-  `role_id` int NOT NULL
+  `role_id` int NOT NULL,
+  `club_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `user_roles`
 --
 
-INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
-(1, 2),
-(2, 2),
-(3, 2),
-(4, 4),
-(5, 4),
-(6, 4);
+INSERT INTO `user_roles` (`user_id`, `role_id`, `club_id`) VALUES
+(1, 2, NULL),
+(2, 2, NULL),
+(3, 2, NULL),
+(4, 4, NULL),
+(5, 4, NULL),
+(6, 4, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1225,7 +1226,8 @@ ALTER TABLE `user_notifications`
 --
 ALTER TABLE `user_roles`
   ADD PRIMARY KEY (`user_id`,`role_id`),
-  ADD KEY `role_id` (`role_id`);
+  ADD KEY `role_id` (`role_id`),
+  ADD KEY `fk_clubs` (`club_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1350,6 +1352,7 @@ ALTER TABLE `user_notifications`
 -- Constraints for table `user_roles`
 --
 ALTER TABLE `user_roles`
+  ADD CONSTRAINT `fk_clubs` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`club_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
