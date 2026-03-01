@@ -7,18 +7,18 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('csrf_token', csrf_token());
 
-$warning_code = isset($_GET['error']) ? (int)$_GET['error'] : 0;
-$warning_message = "";
+$error_map = [
+    1 => "Username is already taken",
+    2 => "Passwords do not match",
+    3 => "Email is already registered",
+    4 => "Invalid username",
+    5 => "Invalid email address",
+    6 => "Password must be at least 8 characters",
+    7 => "Registration failed. Please try again.",
+];
 
-if ($warning_code == 1){
-    $warning_message = "Username is already taken";
-}
-if ($warning_code == 2){
-    $warning_message = "Passwords do not match";
-}
-if ($warning_code == 3){
-    $warning_message = "Email is already registered";
-}
+$warning_code = (int)($_GET['error'] ?? 0);
+$warning_message = $error_map[$warning_code] ?? "";
 
 echo $twig->render('sign-up.twig', [
     'user' => $user,
