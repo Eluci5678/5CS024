@@ -9,8 +9,20 @@ $twig->addGlobal('csrf_token', csrf_token());
 
 $id = (int)($_GET['id'] ?? 0);
 
-$stmt = $mysqli->prepare("SELECT * FROM events WHERE event_id = ?");
-$stmt->bind_param("i", $id);
+if ($user) {
+    $stmt = $mysqli->prepare("
+        SELECT events.*, user_events.user_id AS joined
+        FROM events
+        LEFT JOIN user_events
+            ON events.event_id = user_events.event_id
+            AND user_events.user_id = ?
+        WHERE events.event_id  = ?
+    ");
+    $stmt->bind_param("ii", $user['id'], $id);
+} else {
+    $stmt = $mysqli->prepare("SELECT * FROM events WHERE events.event_id = ?");
+    $stmt->bind_param("i", $id);
+}
 $stmt->execute();
 $event = $stmt->get_result();
 
