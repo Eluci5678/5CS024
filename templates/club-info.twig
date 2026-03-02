@@ -4,7 +4,13 @@
 <body>
     <a href="index.php">home</a>
 
-    {% for row in data %}
+    {% for row in club %}
+        <h1>{{row.club_name}}</h1>
+    {% endfor %}
+
+    <h3>Upcoming Events</h3>
+
+    {% for row in club_events %}
         <div class="event-panel">
             <a href="event-info.php?id={{ row.event_id }}"><h1>{{ row.title }}</h1></a>
             <p>{{ row.events_description }}</p>

@@ -6,7 +6,7 @@
 
     {% for row in data %}
         <div class="event-panel">
-            <h1>{{ row.club_name }}</h1>
+            <a href="club-info.php?id={{ row.club_id }}"><h1>{{ row.club_name }}</h1></a>
             <p>{{ row.description }}</p>
             {% if row.joined %}
                 <a class="btn btn-danger" href="php/student/register-item.php?type=club&id={{ row.club_id }}&action=leave" role="button">Leave</a>
