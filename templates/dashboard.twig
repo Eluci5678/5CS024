@@ -186,8 +186,6 @@
         <input type="datetime-local" name="start_time" value="{{ event.start_time|date('Y-m-d\\TH:i') }}" required>
         <label>End Time</label>
         <input type="datetime-local" name="end_time" value="{{ event.end_time|date('Y-m-d\\TH:i') }}" required>
-        <label>Expiration Date</label>
-        <input type="datetime-local" name="expiration_date" value="{{ event.expiration_date|date('Y-m-d\\TH:i') }}" required>
         <label>Created By</label>
         <input type="number" name="created_by" value="{{ event.created_by }}" required>
         <button type="submit">Update</button>
@@ -211,8 +209,6 @@
         <input type="datetime-local" name="start_time" required>
         <label>End Time</label>
         <input type="datetime-local" name="end_time" required>
-        <label>Expiration Date</label>
-        <input type="datetime-local" name="expiration_date" required>
         <label>Created By</label>
         <input type="number" name="created_by" required>
         <button type="submit">Create</button>

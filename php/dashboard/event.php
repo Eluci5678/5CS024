@@ -14,7 +14,6 @@ $type = $_POST['event_type'] ?? "";
 $club = $_POST['associated_club'] ?? "";
 $start = $_POST['start_time'] ?? "";
 $end = $_POST['end_time'] ?? "";
-$expire = $_POST['expiration_date'] ?? "";
 $creator = $_POST['created_by'] ?? "";
 $delete = isset($_POST['delete']);
 
@@ -30,7 +29,6 @@ else{
     if (empty($club)) $missing[] = "Club ID Missing";
     if (empty($start)) $missing[] = "Start Time Missing";
     if (empty($end)) $missing[] = "End Time Missing";
-    if (empty($expire)) $missing[] = "Expiration Date Missing";
     if (empty($creator)) $missing[] = "Creator ID Missing";
     if (!is_numeric($club)) $missing[] = "Incorrect Club ID";
     if (!is_numeric($creator)) $missing[] = "Incorrect Creator ID";
@@ -50,30 +48,30 @@ elseif ($id) updateRow();
 else createRow();
 
 function createRow(){
-    global $mysqli,$title,$desc,$type,$club,$start,$end,$expire,$creator;
+    global $mysqli,$title,$desc,$type,$club,$start,$end,$creator;
 
     $stmt = $mysqli->prepare("
         INSERT INTO events
-        (title, events_description, event_type, associated_club, start_time, end_time, expiration_date, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (title, events_description, event_type, associated_club, start_time, end_time, created_by)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
 
-    $stmt->bind_param("sssisssi",$title,$desc,$type,$club,$start,$end,$expire,$creator);
+    $stmt->bind_param("sssissi",$title,$desc,$type,$club,$start,$end,$creator);
     $stmt->execute();
     $stmt->close();
     redirect();
 }
 
 function updateRow(){
-    global $mysqli,$id,$title,$desc,$type,$club,$start,$end,$expire,$creator;
+    global $mysqli,$id,$title,$desc,$type,$club,$start,$end,$creator;
 
     $stmt = $mysqli->prepare("
         UPDATE events
-        SET title=?, events_description=?, event_type=?, associated_club=?, start_time=?, end_time=?, expiration_date=?, created_by=?
+        SET title=?, events_description=?, event_type=?, associated_club=?, start_time=?, end_time=?, created_by=?
         WHERE event_id=?
     ");
 
-    $stmt->bind_param("sssisssii",$title,$desc,$type,$club,$start,$end,$expire,$creator,$id);
+    $stmt->bind_param("sssissii",$title,$desc,$type,$club,$start,$end,$creator,$id);
     $stmt->execute();
     $stmt->close();
     redirect();
