@@ -12,35 +12,76 @@ if (!$user) {
     exit;
 }
 
-$stmt = $mysqli->prepare("SELECT * FROM users");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
+$stmt = $mysqli->prepare("
+    SELECT ur.role_id, ur.club_id
+    FROM user_roles ur
+    WHERE ur.user_id = ?
+");
+$stmt->bind_param("i", $user['id']);
 $stmt->execute();
 $result = $stmt->get_result();
-$user_data = $result->fetch_all(MYSQLI_ASSOC);
+$user_roles = $result->fetch_all(MYSQLI_ASSOC);
 
-$stmt = $mysqli->prepare("SELECT * FROM transit_info");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
-$stmt->execute();
-$result = $stmt->get_result();
-$transit_data = $result->fetch_all(MYSQLI_ASSOC);
+$permissions = [
+    'admin' => false,
+    'transport' => false,
+    'gym' => false,
+    'owned' => [],
+    'co-owned' => []
+];
 
-$stmt = $mysqli->prepare("SELECT * FROM gym_opening_times");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
-$stmt->execute();
-$result = $stmt->get_result();
-$gym_data = $result->fetch_all(MYSQLI_ASSOC);
+foreach ($user_roles as $role) {
+    switch ((int)$role['role_id']) {
+        case 1:
+            $permissions['admin'] = true;
+            break;
+        case 2:
+            if ($role['club_id']) {
+                $permissions['owned'][] = $role['club_id'];
+            }
+            break;
+        case 3:
+            if ($role['club_id']) {
+                $permissions['co-owned'][] = $role['club_id'];
+            }
+            break;
+        case 4:
+            $permissions['gym'] = true;
+            break;
+        case 5:
+            $permissions['transport'] = true;
+            break;
+    }
+}
 
-$stmt = $mysqli->prepare("SELECT * FROM clubs");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
-$stmt->execute();
-$result = $stmt->get_result();
-$club_data = $result->fetch_all(MYSQLI_ASSOC);
+function fetchData($mysqli, $query) {
+    $stmt = $mysqli->prepare($query);
+    if (!$stmt) { die("Prepare failed: " . $mysqli->error); }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
 
-$stmt = $mysqli->prepare("SELECT * FROM events");
-if (!$stmt) {die("Prepare failed: " . $mysqli->error);}
-$stmt->execute();
-$result = $stmt->get_result();
-$event_data = $result->fetch_all(MYSQLI_ASSOC);
+$user_data = fetchData($mysqli, "SELECT * FROM users");
+$transit_data = fetchData($mysqli, "SELECT * FROM transit_info");
+$gym_data = fetchData($mysqli, "SELECT * FROM gym_opening_times");
+$club_data = fetchData($mysqli, "SELECT * FROM clubs");
+$event_data = fetchData($mysqli, "SELECT * FROM events");
+
+if (!$permissions['admin']) {
+    $club_data = array_filter($club_data, function($club) use ($permissions) {
+        return in_array($club['club_id'], $permissions['owned']) || in_array($club['club_id'], $permissions['co-owned']);
+    });
+
+    $event_data = array_filter($event_data, function($event) use ($permissions) {
+        return in_array($event['associated_club'], $permissions['owned']) || in_array($event['associated_club'], $permissions['co-owned']);
+    });
+
+    if (!$permissions['gym']) { $gym_data = []; }
+    if (!$permissions['transport']) { $transit_data = []; }
+
+    $user_data = [];
+}
 
 echo $twig->render('dashboard.twig', [
     'user' => $user,
@@ -48,6 +89,7 @@ echo $twig->render('dashboard.twig', [
     'transit_data' => $transit_data,
     'gym_data' => $gym_data,
     'club_data' => $club_data,
-    'event_data' => $event_data
+    'event_data' => $event_data,
+    'permissions' => $permissions
 ]);
 ?>
