@@ -2,9 +2,28 @@
 $user = include("../user.php");
 include("../../credentials/db.php");
 
-if (!$user){
+function redirect(){
     header("Location: ../../dashboard.php");
     exit;
+}
+
+if (!$user){
+    redirect();
+}
+
+$stmt = $mysqli->prepare("
+    SELECT 1
+    FROM user_roles
+    WHERE user_id = ? AND role_id = 1
+    LIMIT 1
+");
+$stmt->bind_param("i", $user['id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$stmt->close();
+
+if ($result->num_rows === 0){
+    redirect();
 }
 
 $id = $_POST['id'] ?? null;
@@ -130,8 +149,5 @@ function isUserUnique($username,$email){
     return !$exists;
 }
 
-function redirect(){
-    header("Location: ../../dashboard.php");
-    exit;
-}
 exit;
+?>

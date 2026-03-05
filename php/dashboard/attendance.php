@@ -9,6 +9,20 @@ function redirect() {
 
 if (!$user) redirect();
 
+$stmt = $mysqli->prepare("
+    SELECT 1
+    FROM user_roles
+    WHERE user_id = ? AND role_id = 1
+    LIMIT 1
+");
+$stmt->bind_param("i", $user['id']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    redirect();
+}
+
 if (!isset($_FILES['csv_file']) || $_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
     redirect();
 }

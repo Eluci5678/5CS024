@@ -2,9 +2,53 @@
 $user = include("../user.php");
 include("../../credentials/db.php");
 
-if (!$user){
+function redirect(){
     header("Location: ../../dashboard.php");
     exit;
+}
+
+if (!$user){
+    redirect();
+}
+
+$stmt = $mysqli->prepare("
+    SELECT role_id, club_id
+    FROM user_roles
+    WHERE user_id = ?
+");
+$stmt->bind_param("i", $user['id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$user_roles = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+$permissions = [
+    'admin' => false,
+    'owned' => [],
+    'co_owned' => []
+];
+
+foreach ($user_roles as $role){
+    switch ((int)$role['role_id']){
+        case 1:
+            $permissions['admin'] = true;
+            break;
+        case 2:
+            if ($role['club_id']) $permissions['owned'][] = (int)$role['club_id'];
+            break;
+        case 3:
+            if ($role['club_id']) $permissions['co_owned'][] = (int)$role['club_id'];
+            break;
+    }
+}
+
+function canAccessClub($club_id){
+    global $permissions;
+
+    if ($permissions['admin']) return true;
+
+    return in_array($club_id,$permissions['owned']) ||
+           in_array($club_id,$permissions['co_owned']);
 }
 
 $id = $_POST['id'] ?? null;
@@ -21,8 +65,7 @@ $missing = [];
 
 if ($delete){
     if (!is_numeric($id)) $missing[] = "Incorrect ID";
-}
-else{
+}else{
     if (empty($title)) $missing[] = "Title Missing";
     if (empty($desc)) $missing[] = "Description Missing";
     if (empty($type)) $missing[] = "Type Missing";
@@ -33,14 +76,34 @@ else{
     if (!is_numeric($club)) $missing[] = "Incorrect Club ID";
     if (!is_numeric($creator)) $missing[] = "Incorrect Creator ID";
     if (strlen($title) > 50) $missing[] = "Title too long (50 Characters)";
-
-    if ($id !== null && !is_numeric($id))
-        $missing[] = "Incorrect ID";
+    if ($id !== null && !is_numeric($id)) $missing[] = "Incorrect ID";
 }
 
 if (!empty($missing)){
-    header("Location: ../../dashboard.php");
-    exit;
+    redirect();
+}
+
+if ($delete || $id){
+    $stmt = $mysqli->prepare("
+        SELECT associated_club
+        FROM events
+        WHERE event_id = ?
+    ");
+    $stmt->bind_param("i",$id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $event = $result->fetch_assoc();
+    $stmt->close();
+
+    if (!$event || !canAccessClub((int)$event['associated_club'])){
+        redirect();
+    }
+}
+
+if (!$id){
+    if (!canAccessClub((int)$club)){
+        redirect();
+    }
 }
 
 if ($delete) deleteRow();
@@ -89,10 +152,5 @@ function deleteRow(){
     $stmt->execute();
     $stmt->close();
     redirect();
-}
-
-function redirect(){
-    header("Location: ../../dashboard.php");
-    exit;
 }
 ?>

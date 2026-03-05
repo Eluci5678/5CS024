@@ -2,9 +2,44 @@
 $user = include("../user.php");
 include("../../credentials/db.php");
 
-if (!$user){
+function redirect(){
     header("Location: ../../dashboard.php");
     exit;
+}
+
+if (!$user){
+    redirect();
+}
+
+$stmt = $mysqli->prepare("
+    SELECT role_id
+    FROM user_roles
+    WHERE user_id = ?
+");
+$stmt->bind_param("i", $user['id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$user_roles = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+$permissions = [
+    'admin' => false,
+    'gym' => false
+];
+
+foreach ($user_roles as $role){
+    switch ((int)$role['role_id']){
+        case 1:
+            $permissions['admin'] = true;
+            break;
+        case 4:
+            $permissions['gym'] = true;
+            break;
+    }
+}
+
+if (!$permissions['admin'] && !$permissions['gym']){
+    redirect();
 }
 
 $id = $_POST['id'] ?? null;
@@ -33,8 +68,7 @@ else{
 }
 
 if (!empty($missing)){
-    header("Location: ../../dashboard.php");
-    exit;
+    redirect();
 }
 
 if ($delete) deleteRow();
@@ -83,10 +117,5 @@ function deleteRow(){
     $stmt->execute();
     $stmt->close();
     redirect();
-}
-
-function redirect(){
-    header("Location: ../../dashboard.php");
-    exit;
 }
 ?>
