@@ -62,7 +62,14 @@ function fetchData($mysqli, $query) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-$user_data = fetchData($mysqli, "SELECT * FROM users");
+$user_data = fetchData($mysqli, "
+    SELECT 
+        u.*,
+        GROUP_CONCAT(ur.role_id) as roles
+    FROM users u
+    LEFT JOIN user_roles ur ON ur.user_id = u.user_id
+    GROUP BY u.user_id
+");
 $transit_data = fetchData($mysqli, "SELECT * FROM transit_info");
 $gym_data = fetchData($mysqli, "SELECT * FROM gym_opening_times");
 $club_data = fetchData($mysqli, "SELECT * FROM clubs");

@@ -49,6 +49,9 @@ if ($id){
         updatePassword($id, $password);
     }
 
+
+    updateRoles($id);
+
     redirect();
 }
 
@@ -114,6 +117,32 @@ function updatePassword($id, $password){
     $stmt = $mysqli->prepare("UPDATE users SET password_hash=? WHERE user_id=?");
     $stmt->bind_param("si", $passwordHash, $id);
     $stmt->execute();
+    $stmt->close();
+}
+
+function updateRoles($user_id){
+    global $mysqli;
+
+    $roles = $_POST['roles'] ?? [];
+
+    $stmt = $mysqli->prepare("DELETE FROM user_roles WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->close();
+
+    if (!$roles) return;
+
+    $stmt = $mysqli->prepare("
+        INSERT INTO user_roles (user_id, role_id)
+        VALUES (?,?)
+    ");
+
+    foreach ($roles as $role_id){
+        if (!is_numeric($role_id)) continue;
+        $stmt->bind_param("ii", $user_id, $role_id);
+        $stmt->execute();
+    }
+
     $stmt->close();
 }
 

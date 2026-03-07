@@ -16,19 +16,35 @@
 {% if permissions.admin %}
 <h2>Users</h2>
 
-    {% for user in user_data %}
-    <form method="POST" action="php/dashboard/user.php">
-        <input type="hidden" name="id" value="{{ user.user_id }}" required>
-        <label>Username</label>
-        <input type="text" name="username" value="{{ user.name }}" required>
-        <label>Email</label>
-        <input type="email" name="email" value="{{ user.email }}" required>
-        <label>New Password</label>
-        <input type="password" name="password" placeholder="leave blank to keep password">
-        <button type="submit">Update User</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-    {% endfor %}
+{% for user in user_data %}
+<form method="POST" action="php/dashboard/user.php">
+    <input type="hidden" name="id" value="{{ user.user_id }}" required>
+    <label>Username</label>
+    <input type="text" name="username" value="{{ user.name }}" required>
+    <label>Email</label>
+    <input type="email" name="email" value="{{ user.email }}" required>
+    <label>New Password</label>
+    <input type="password" name="password" placeholder="leave blank to keep password">
+    <label>Permissions</label>
+    <label>
+        <input type="checkbox" name="roles[]" value="1"
+        {% if '1' in user.roles|split(',') %}checked{% endif %}>
+        Admin
+    </label>
+    <label>
+        <input type="checkbox" name="roles[]" value="4"
+        {% if '4' in user.roles|split(',') %}checked{% endif %}>
+        Gym
+    </label>
+    <label>
+        <input type="checkbox" name="roles[]" value="5"
+        {% if '5' in user.roles|split(',') %}checked{% endif %}>
+        Transport
+    </label>
+    <button type="submit">Update User</button>
+    <button type="submit" name="delete" value="1">Delete</button>
+</form>
+{% endfor %}
 
     <form method="POST" action="php/dashboard/user.php">
         <label>Username</label>
