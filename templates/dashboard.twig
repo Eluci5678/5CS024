@@ -232,6 +232,66 @@
 
 {% endif %}
 
+{% if permissions.admin or permissions.owned|length > 0 %}
+
+<h2>Club Role Assignment</h2>
+
+{% for club in club_data %}
+{% if permissions.admin or club.club_id in permissions.owned %}
+
+<form method="POST" action="php/dashboard/club-roles.php">
+
+<h3>{{ club.club_name }}</h3>
+
+<input type="hidden" name="club_id" value="{{ club.club_id }}">
+
+<strong>Owner</strong>
+<br>
+
+{% for user in user_data %}
+    {% if user.user_id == club.owner_id %}
+        {{ user.name }}
+        <br>
+    {% endif %}
+{% endfor %}
+
+<strong>Set Co-Owners</strong>
+<br>
+
+{% for member in club_members %}
+    {% if member.club_id == club.club_id %}
+
+        {% for user in user_data %}
+            {% if user.user_id == member.user_id and user.user_id != club.owner_id %}
+
+                {% set checked = false %}
+                {% for role in club_roles %}
+                    {% if role.user_id == user.user_id and role.club_id == club.club_id %}
+                        {% set checked = true %}
+                    {% endif %}
+                {% endfor %}
+
+                <label>
+                    <input type="checkbox" name="coowners[]" value="{{ user.user_id }}" {% if checked %}checked{% endif %}>
+                    {{ user.name }}
+                </label>
+                <br>
+
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
+{% endfor %}
+
+<button type="submit">Save Co-Owners</button>
+
+</form>
+
+{% endif %}
+{% endfor %}
+
+{% endif %}
+
 </body>
 
 {% include 'footer.twig' %}
