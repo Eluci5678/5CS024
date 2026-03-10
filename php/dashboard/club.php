@@ -99,13 +99,23 @@ function createRow(){
     global $mysqli,$name,$desc,$owner,$schedule;
 
     $stmt = $mysqli->prepare("
-        INSERT INTO clubs (club_name, description, owner_id, schedule)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO clubs (club_name, description, schedule)
+        VALUES (?, ?, ?)
     ");
+    $stmt->bind_param("sss",$name,$desc,$schedule);
+    $stmt->execute();
 
-    $stmt->bind_param("ssis",$name,$desc,$owner,$schedule);
+    $club_id = $mysqli->insert_id;
+    $stmt->close();
+
+    $stmt = $mysqli->prepare("
+        INSERT INTO user_roles (user_id, role_id, club_id)
+        VALUES (?, 2, ?)
+    ");
+    $stmt->bind_param("ii",$owner,$club_id);
     $stmt->execute();
     $stmt->close();
+
     redirect();
 }
 
@@ -114,13 +124,29 @@ function updateRow(){
 
     $stmt = $mysqli->prepare("
         UPDATE clubs
-        SET club_name=?, description=?, owner_id=?, schedule=?
+        SET club_name=?, description=?, schedule=?
         WHERE club_id=?
     ");
-
-    $stmt->bind_param("ssisi",$name,$desc,$owner,$schedule,$id);
+    $stmt->bind_param("sssi",$name,$desc,$schedule,$id);
     $stmt->execute();
     $stmt->close();
+
+    $stmt = $mysqli->prepare("
+        DELETE FROM user_roles
+        WHERE club_id=? AND role_id=2
+    ");
+    $stmt->bind_param("i",$id);
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $mysqli->prepare("
+        INSERT INTO user_roles (user_id, role_id, club_id)
+        VALUES (?,2,?)
+    ");
+    $stmt->bind_param("ii",$owner,$id);
+    $stmt->execute();
+    $stmt->close();
+
     redirect();
 }
 
