@@ -43,6 +43,7 @@ if (!$permissions['admin'] && !$permissions['gym']){
 }
 
 $id = $_POST['id'] ?? null;
+$class_date = $_POST['class_date'] ?? "";
 $day = $_POST['day_of_week'] ?? "";
 $class_name = $_POST['class_name'] ?? "";
 $start = $_POST['start_time'] ?? "";
