@@ -72,6 +72,7 @@ $user_data = fetchData($mysqli, "
 ");
 $transit_data = fetchData($mysqli, "SELECT * FROM transit_info");
 $gym_data = fetchData($mysqli, "SELECT * FROM gym_opening_times");
+$gym_classes = fetchData($mysqli, "SELECT * FROM exercise_classes");
 $club_data = fetchData($mysqli, "
     SELECT c.*, ur.user_id AS owner_id
     FROM clubs c
@@ -104,6 +105,7 @@ echo $twig->render('dashboard.twig', [
     'user_data' => $user_data,
     'transit_data' => $transit_data,
     'gym_data' => $gym_data,
+    'gym_classes' => $gym_classes,
     'club_data' => $club_data,
     'event_data' => $event_data,
     'club_roles' => $club_roles,

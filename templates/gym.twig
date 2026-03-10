@@ -12,15 +12,24 @@
             <th>Closes</th>
         </tr>
 
-        {% for row in data %}
+        {% for time in gym_times %}
             <tr>
-                <td>{{ row.campus_name }}</td>
-                <td>{{ row.day_of_week }}</td>
-                <td>{{ row.opens_at }}</td>
-                <td>{{ row.closes_at }}</td>
+                <td>{{ time.campus_name }}</td>
+                <td>{{ time.day_of_week }}</td>
+                <td>{{ time.opens_at }}</td>
+                <td>{{ time.closes_at }}</td>
             </tr>
         {% endfor %}
     </table>
+
+    {% for class in gym_classes %}
+        <h1>{{class.class_name}}</h1>
+        <h3>{{class.campus_name}}</h3>
+        <h5>{{class.location}}</h5>
+        <p>Start: {{class.start_time}}</p>
+        <p>End: {{class.end_time}}</p>
+    {% endfor %}
+
 </body>
 
 {% include 'footer.twig' %}

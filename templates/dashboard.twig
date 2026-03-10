@@ -89,7 +89,7 @@
 <h2>Gym Opening Times</h2>
 
     {% for gym in gym_data %}
-    <form method="POST" action="php/dashboard/gym.php">
+    <form method="POST" action="php/dashboard/gym-times.php">
         <input type="hidden" name="id" value="{{ gym.id }}">
         <label>Campus Name</label>
         <input type="text" name="campus_name" value="{{ gym.campus_name }}" required>
@@ -119,7 +119,7 @@
     </form>
     {% endfor %}
 
-    <form method="POST" action="php/dashboard/gym.php">
+    <form method="POST" action="php/dashboard/gym-times.php">
         <label>Campus Name</label>
         <input type="text" name="campus_name" required>
         <label>Day of Week</label>
@@ -141,6 +141,66 @@
         <textarea name="note"></textarea>
         <label>Source Reference</label>
         <input type="text" name="source_ref">
+        <button type="submit">Create</button>
+    </form>
+
+<h2>Gym Classes</h2>
+
+    {% for class in gym_classes %}
+    <form method = "POST" action="php/dashboard/gym-classes.php">
+        <input type="hidden" name="id" value="{{ class.id }}">
+        <label>Class Date</label>
+        <input type="date" name="class_date" value="{{ class.class_date|date('Y-m-d') }}" required>
+        <label>Day of Week</label>
+        <select name="day_of_week" required>
+            <option value="">Select</option>
+            <option {% if class.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
+            <option {% if class.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+            <option {% if class.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+            <option {% if class.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
+            <option {% if class.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
+            <option {% if class.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
+            <option {% if class.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
+        </select>
+        <label>Class Name</label>
+        <input type="text" name="class_name" value="{{ class.class_name }}" required>
+        <label>Start Time</label>
+        <input type="time" name="start_time" value="{{ class.start_time }}" required>
+        <label>End Time</label>
+        <input type="time" name="end_time" value="{{ class.end_time }}" required>
+        <label>Campus</label>
+        <input type="text" name="campus_name" value="{{ class.campus_name }}" required>
+        <label>Location</label>
+        <input type="text" name="location" value="{{ class.location }}" required>
+        <button type="submit">Update</button>
+        <button type="submit" name="delete" value="1">Delete</button>
+    </form>
+    {% endfor %}
+
+        <form method = "POST" action="php/dashboard/gym-classes.php">
+        <label>Class Date</label>
+        <input type="date" name="class_date" required>
+        <label>Day of Week</label>
+        <select name="day_of_week" required>
+            <option value="">Select</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+            <option>Sunday</option>
+        </select>
+        <label>Class Name</label>
+        <input type="text" name="class_name" required>
+        <label>Start Time</label>
+        <input type="time" name="start_time" required>
+        <label>End Time</label>
+        <input type="time" name="end_time" required>
+        <label>Campus</label>
+        <input type="text" name="campus_name" required>
+        <label>Location</label>
+        <input type="text" name="location" required>
         <button type="submit">Create</button>
     </form>
 
