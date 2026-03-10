@@ -7,6 +7,8 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('csrf_token', csrf_token());
 
+include("php/cleanup.php");
+
 if ($user) {
     $stmt = $mysqli->prepare("
         SELECT events.*, user_events.user_id AS joined
