@@ -7,6 +7,9 @@
     {% for row in event %}
         <h1>{{row.title}}</h1>
         <p>{{ row.events_description }}</p>
+        <p>Type: {{row.event_type}}</p>
+        <p>Starts: {{row.start_time}}</p>
+        <p>Ends: {{row.end_time}}</p>
         {% if row.joined %}
             <a class="btn btn-danger" href="php/student/register-item.php?type=event&id={{ row.event_id }}&action=leave" role="button">Leave</a>
         {% else %}

@@ -7,10 +7,13 @@
     <h1>Joined Clubs</h1>
     {% for club in clubs %}
         <p>{{ club.club_name }}</p>
+        <p>{{ club.schedule }}</p>
     {% endfor %}
     <h1>Joined Events</h1>
     {% for event in events %}
         <p>{{ event.title }}</p>
+        <p>Starts: {{event.start_time}}</p>
+        <p>Ends: {{event.end_time}}</p>
     {% endfor %}
 </body>
 
