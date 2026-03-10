@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.1deb3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 01, 2026 at 09:31 PM
--- Server version: 8.0.44
--- PHP Version: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Mar 09, 2026 at 02:43 PM
+-- Server version: 8.0.45-0ubuntu0.24.04.1
+-- PHP Version: 8.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db2218870`
+-- Database: `5cs024`
 --
 
 -- --------------------------------------------------------
@@ -817,7 +817,6 @@ CREATE TABLE `clubs` (
   `club_id` int NOT NULL,
   `club_name` varchar(150) NOT NULL,
   `description` text NOT NULL,
-  `owner_id` int NOT NULL,
   `schedule` varchar(255) NOT NULL,
   `club_creation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -826,10 +825,12 @@ CREATE TABLE `clubs` (
 -- Dumping data for table `clubs`
 --
 
-INSERT INTO `clubs` (`club_id`, `club_name`, `description`, `owner_id`, `schedule`, `club_creation_date`) VALUES
-(1, 'Computer Science Society', 'A club for students interested in coding, AI, and tech careers.', 1, 'Every Wednesday 6PM', '2026-02-02 14:38:57'),
-(2, 'Football Club', 'University football training and competitive matches.', 2, 'Tuesdays & Fridays 5PM', '2026-02-02 14:38:57'),
-(3, 'Entrepreneurship Club', 'Helping students build startups and side hustles.', 4, 'Mondays 8PM', '2026-02-02 14:38:57');
+INSERT INTO `clubs` (`club_id`, `club_name`, `description`, `schedule`, `club_creation_date`) VALUES
+(1, 'Computer Science Society', 'A club for students interested in coding, AI, and tech careers.', 'Every Wednesday 6PM', '2026-02-02 14:38:57'),
+(2, 'Football Club', 'University football training and competitive matches.', 'Tuesdays & Fridays 4PM', '2026-02-02 14:38:57'),
+(3, 'Entrepreneurship Club', 'Helping students build startups and side hustles.', 'Mondays 8PM', '2026-02-02 14:38:57'),
+(5, 'new club', 'test', 'now', '2026-03-03 17:43:05'),
+(6, 'Another Club', 'testing permissions', 'tomorrow', '2026-03-08 12:59:36');
 
 -- --------------------------------------------------------
 
@@ -845,7 +846,6 @@ CREATE TABLE `events` (
   `associated_club` int NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
-  `expiration_date` datetime NOT NULL,
   `created_by` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -853,10 +853,11 @@ CREATE TABLE `events` (
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`event_id`, `title`, `events_description`, `event_type`, `associated_club`, `start_time`, `end_time`, `expiration_date`, `created_by`) VALUES
-(1, 'Hackathon Night', 'Overnight coding event with prizes.', 'Workshop', 1, '2026-02-10 18:00:00', '2026-02-11 08:00:00', '2026-02-12 00:00:00', 1),
-(2, 'Football Trials', 'Open trials for new players.', 'Sports', 2, '2026-02-15 16:00:00', '2026-02-15 18:00:00', '2026-02-16 00:00:00', 2),
-(3, 'Startup Pitch Night', 'Pitch your business idea to judges.', 'Networking', 3, '2026-02-20 17:30:00', '2026-02-20 21:00:00', '2026-02-21 00:00:00', 3);
+INSERT INTO `events` (`event_id`, `title`, `events_description`, `event_type`, `associated_club`, `start_time`, `end_time`, `created_by`) VALUES
+(1, 'Hackathon Night', 'Overnight coding event with prizes.', 'Event', 1, '2026-02-10 18:00:00', '2026-02-11 08:00:00', 1),
+(2, 'Football Trials', 'Open trials for new players.', 'Sports', 2, '2026-02-15 16:00:00', '2026-02-15 18:00:00', 2),
+(3, 'Startup Pitch Night', 'Pitch your business idea to judges.', 'Networking', 3, '2026-02-20 17:30:00', '2026-02-20 21:00:00', 3),
+(5, 'hi scott', 'hi scott\r\n\r\nhi', 'hi', 3, '2026-03-02 05:10:00', '2001-01-01 08:47:00', 4);
 
 -- --------------------------------------------------------
 
@@ -921,7 +922,8 @@ CREATE TABLE `gym_opening_times` (
 --
 
 INSERT INTO `gym_opening_times` (`id`, `campus_name`, `day_of_week`, `opens_at`, `closes_at`, `note`, `source_ref`) VALUES
-(1, 'Campus', 'Wednesday', '12:20:00', '04:05:00', ':)', 'idk');
+(1, 'Campus', 'Wednesday', '12:20:00', '04:05:00', ':)', 'idk'),
+(3, 'Another Location', 'Tuesday', '12:12:00', '12:12:00', 'dfbsjafbksd', 'something');
 
 -- --------------------------------------------------------
 
@@ -957,7 +959,8 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 (1, 'admin'),
 (2, 'owner'),
 (3, 'co_owner'),
-(4, 'member');
+(4, 'gym'),
+(5, 'transport');
 
 -- --------------------------------------------------------
 
@@ -1027,7 +1030,12 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password_hash`, `account_creat
 (17, 'test', 'test@email.com', '$2y$10$HgCQUL6bduk2ksGfCJJbHuytYAELL5Vy0jMXErW7dahy17Qs9JDku', '2026-02-20 14:05:18'),
 (18, 'ThisUser', 'realemail@emailhost.com', '$2y$10$FMML3QmOsqkYn.oAJgLEyOVv6x8pX4WN/KCj6xauw9SeeptRBJnF2', '2026-02-23 13:04:59'),
 (19, 'new user', 'user@emil.com', '$2y$10$GoDEJ/lXj2AU1s4la/KZWesQgiM/kexM20z/U/DgCRu2FPJfPGHWK', '2026-02-23 13:07:05'),
-(20, 'yet another test', 'email@emaiaaaal.com', '$2y$10$23GUbi/g4FPqCBWXqoqNKeUE8CXkad03fkxWZBk/3LdZCoznFZjkO', '2026-02-23 14:46:53');
+(20, 'yet another test', 'email@emaiaaaal.com', '$2y$10$23GUbi/g4FPqCBWXqoqNKeUE8CXkad03fkxWZBk/3LdZCoznFZjkO', '2026-02-23 14:46:53'),
+(21, 'PM2', 'PM2@PM2.email', '$2y$10$M17BgLeMWB.H2FVOL7fq1.GZg7XBy3YUDkb6eZpU4OYxYctE0WVIC', '2026-03-02 14:26:05'),
+(22, 'PM', 'dusha@dmail.com', '$2y$10$QwO9j8whcyRsfGUNNkYre.rPs0vE2GkyeyxusWecv0TusrImmHStm', '2026-03-04 19:28:37'),
+(23, 'another test user', 'email@emailemaiul.com', '$2y$10$hDR1SvMt3TzRX00ObDquKuhu1GR6VobIBuZb1jvJ.obY/Er67lIKq', '2026-03-05 17:22:25'),
+(24, 'admin', 'admin@email.com', '$2y$10$2P5jC6JgZAkM3u1Y3THsIO8pXsz1tfSo1jaeIFBtrm7drIBVflSra', '2026-03-08 12:58:29'),
+(25, 'testeruser', 'testeruser@email.com', '$2y$10$vg6RECUvVXBEhdUAZr06eOUVXCDcZGoeDYdZTeaQ66DRZPSYy5ghm', '2026-03-08 20:38:05');
 
 -- --------------------------------------------------------
 
@@ -1046,14 +1054,16 @@ CREATE TABLE `user_clubs` (
 --
 
 INSERT INTO `user_clubs` (`user_id`, `club_id`, `club_join_date`) VALUES
-(17, 1, '2026-02-22 18:03:36'),
+(3, 2, '2026-03-08 12:56:03'),
+(13, 6, '2026-03-08 13:00:05'),
 (17, 2, '2026-02-22 18:05:05'),
 (17, 3, '2026-02-22 18:03:37'),
 (18, 1, '2026-02-23 13:21:46'),
 (19, 1, '2026-02-23 13:07:28'),
 (19, 2, '2026-02-23 13:07:42'),
 (20, 1, '2026-02-23 14:46:57'),
-(20, 3, '2026-02-23 14:52:54');
+(20, 3, '2026-02-23 14:52:54'),
+(22, 6, '2026-03-08 13:00:05');
 
 -- --------------------------------------------------------
 
@@ -1072,10 +1082,15 @@ CREATE TABLE `user_events` (
 --
 
 INSERT INTO `user_events` (`user_id`, `event_id`, `event_join_date`) VALUES
+(17, 1, '2026-03-02 14:45:29'),
 (17, 2, '2026-02-23 14:50:42'),
+(17, 3, '2026-03-02 14:42:32'),
 (20, 1, '2026-02-23 14:50:23'),
 (20, 2, '2026-02-23 14:55:32'),
-(20, 3, '2026-02-23 14:50:26');
+(20, 3, '2026-02-23 14:50:26'),
+(21, 1, '2026-03-02 14:26:41'),
+(21, 2, '2026-03-02 14:26:44'),
+(21, 3, '2026-03-02 14:26:46');
 
 -- --------------------------------------------------------
 
@@ -1096,6 +1111,7 @@ CREATE TABLE `user_notifications` (
 --
 
 CREATE TABLE `user_roles` (
+  `user_role_id` int NOT NULL,
   `user_id` int NOT NULL,
   `role_id` int NOT NULL,
   `club_id` int DEFAULT NULL
@@ -1105,13 +1121,23 @@ CREATE TABLE `user_roles` (
 -- Dumping data for table `user_roles`
 --
 
-INSERT INTO `user_roles` (`user_id`, `role_id`, `club_id`) VALUES
-(1, 2, NULL),
-(2, 2, NULL),
-(3, 2, NULL),
-(4, 4, NULL),
-(5, 4, NULL),
-(6, 4, NULL);
+INSERT INTO `user_roles` (`user_role_id`, `user_id`, `role_id`, `club_id`) VALUES
+(60, 1, 2, 1),
+(42, 1, 5, NULL),
+(61, 2, 2, 2),
+(41, 2, 5, NULL),
+(40, 3, 5, NULL),
+(62, 4, 2, 3),
+(39, 12, 1, NULL),
+(38, 13, 1, NULL),
+(37, 14, 1, NULL),
+(65, 17, 2, 5),
+(17, 18, 1, NULL),
+(35, 19, 1, NULL),
+(34, 20, 1, NULL),
+(13, 21, 1, NULL),
+(33, 22, 1, NULL),
+(59, 24, 1, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1225,9 +1251,11 @@ ALTER TABLE `user_notifications`
 -- Indexes for table `user_roles`
 --
 ALTER TABLE `user_roles`
-  ADD PRIMARY KEY (`user_id`,`role_id`),
+  ADD PRIMARY KEY (`user_role_id`),
+  ADD UNIQUE KEY `uniq_user_role_club` (`user_id`,`role_id`,`club_id`),
   ADD KEY `role_id` (`role_id`),
-  ADD KEY `fk_clubs` (`club_id`);
+  ADD KEY `fk_clubs` (`club_id`),
+  ADD KEY `idx_user_id` (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1255,13 +1283,13 @@ ALTER TABLE `campus_opening_times`
 -- AUTO_INCREMENT for table `clubs`
 --
 ALTER TABLE `clubs`
-  MODIFY `club_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `club_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `event_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `exercise_classes`
@@ -1273,13 +1301,13 @@ ALTER TABLE `exercise_classes`
 -- AUTO_INCREMENT for table `gym_opening_times`
 --
 ALTER TABLE `gym_opening_times`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `role_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `rooms`
@@ -1297,7 +1325,13 @@ ALTER TABLE `transit_info`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `user_roles`
+--
+ALTER TABLE `user_roles`
+  MODIFY `user_role_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- Constraints for dumped tables
