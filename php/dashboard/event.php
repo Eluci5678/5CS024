@@ -77,6 +77,12 @@ if ($delete){
     if (!is_numeric($creator)) $missing[] = "Incorrect Creator ID";
     if (strlen($title) > 50) $missing[] = "Title too long (50 Characters)";
     if ($id !== null && !is_numeric($id)) $missing[] = "Incorrect ID";
+
+    $start_dt = new DateTime($start);
+    $end_dt = new DateTime($end);
+    $now = new DateTime();
+    if ($start_dt < $now){$missing[] = "Start time cannot be in the past";}
+    if ($end_dt <= $start_dt){$missing[] = "End time must be after start time";}
 }
 
 if (!empty($missing)){
