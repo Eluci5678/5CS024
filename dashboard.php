@@ -76,10 +76,15 @@ $transit_data = fetchData($mysqli, "SELECT * FROM transit_info");
 $gym_data = fetchData($mysqli, "SELECT * FROM gym_opening_times");
 $gym_classes = fetchData($mysqli, "SELECT * FROM exercise_classes");
 $club_data = fetchData($mysqli, "
-    SELECT c.*, ur.user_id AS owner_id
+    SELECT 
+        c.*,
+        ur.user_id AS owner_id,
+        u.name AS owner_name
     FROM clubs c
     LEFT JOIN user_roles ur 
         ON ur.club_id = c.club_id AND ur.role_id = 2
+    LEFT JOIN users u 
+        ON u.user_id = ur.user_id
 ");
 $event_data = fetchData($mysqli, "SELECT * FROM events");
 $club_roles = fetchData($mysqli, "SELECT user_id, club_id FROM user_roles WHERE role_id = 3");

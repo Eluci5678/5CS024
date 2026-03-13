@@ -217,8 +217,10 @@
         <input type="text" name="club_name" value="{{ club.club_name }}" required>
         <label>Description</label>
         <textarea name="description" required>{{ club.description }}</textarea>
-        <label>Owner ID</label>
-        <input type="number" name="owner_id" value="{{ club.owner_id }}" required>
+        <label>Owner</label>
+        <input type="text" id="owner_display_{{ club.club_id }}" placeholder="Select user" value="{{ club.owner_name }}" readonly>
+        <input type="hidden" name="owner_id" id="owner_id_{{ club.club_id }}" value="{{ club.owner_id }}">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#userSearchModal" data-target-input="{{ club.club_id }}">Search</button>
         <label>Schedule</label>
         <input type="text" name="schedule" value="{{ club.schedule }}" required>
         <button type="submit">Update</button>
@@ -234,8 +236,10 @@
         <input type="text" name="club_name" required>
         <label>Description</label>
         <textarea name="description" required></textarea>
-        <label>Owner ID</label>
-        <input type="number" name="owner_id" required>
+        <label>Owner</label>
+        <input type="text" id="owner_display_new" placeholder="Select user" readonly>
+        <input type="hidden" name="owner_id" id="owner_id_new">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#userSearchModal" data-target-input="new">Search</button>
         <label>Schedule</label>
         <input type="text" name="schedule" required>
         <button type="submit">Create</button>
@@ -353,5 +357,9 @@
 {% endif %}
 
 </body>
+
+{% include 'modal/user-id-modal.twig' %}
+
+<script src="javascript/user-modal.js"></script>
 
 {% include 'footer.twig' %}
