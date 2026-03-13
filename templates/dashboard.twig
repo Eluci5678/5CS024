@@ -383,8 +383,6 @@
         <input type="datetime-local" name="start_time" value="{{ event.start_time|date('Y-m-d\\TH:i') }}" required>
         <label>End Time</label>
         <input type="datetime-local" name="end_time" value="{{ event.end_time|date('Y-m-d\\TH:i') }}" required>
-        <label>Created By</label>
-        <input type="number" name="created_by" value="{{ event.created_by }}" required>
         <button type="submit">Update</button>
         <button type="submit" name="delete" value="1">Delete</button>
     </form>
@@ -406,8 +404,6 @@
         <input type="datetime-local" name="start_time" required>
         <label>End Time</label>
         <input type="datetime-local" name="end_time" required>
-        <label>Created By</label>
-        <input type="number" name="created_by" required>
         <button type="submit">Create</button>
     </form>
 

@@ -58,7 +58,7 @@ $type = $_POST['event_type'] ?? "";
 $club = $_POST['associated_club'] ?? "";
 $start = $_POST['start_time'] ?? "";
 $end = $_POST['end_time'] ?? "";
-$creator = $_POST['created_by'] ?? "";
+$creator = $user['id'];
 $delete = isset($_POST['delete']);
 
 $missing = [];
