@@ -58,6 +58,123 @@
 
 {% endif %}
 
+{% if permissions.admin %}
+
+<h2>Buildings</h2>
+
+{% for building in buildings %}
+    <form method="POST" action="php/dashboard/buildings.php">
+        <input type="hidden" name="id" value="{{ building.building_id }}">
+        <label>Building Initials</label>
+        <input type="text" name="building_initials" value="{{ building.building_initials }}" required>
+        <label>Building Name</label>
+        <input type="text" name="building_name" value="{{ building.building_name }}" required>
+        <label>Campus Location</label>
+        <input type="text" name="campus_location" value="{{ building.campus_location }}" required>
+        <button type="submit">Update</button>
+        <button type="submit" name="delete" value="1">Delete</button>
+    </form>
+
+{% endfor %}
+
+    <form method="POST" action="php/dashboard/buildings.php">
+        <label>Building Initials</label>
+        <input type="text" name="building_initials" required>
+        <label>Building Name</label>
+        <input type="text" name="building_name" required>
+        <label>Campus Location</label>
+        <input type="text" name="campus_location" required>
+        <button type="submit">Create</button>
+    </form>
+
+<h2>Rooms</h2>
+
+{% for room in rooms %}
+    <form method="POST" action="php/dashboard/rooms.php">
+        <input type="hidden" name="id" value="{{ room.room_id }}">
+        <label>Room Code</label>
+        <input type="text" name="room_code" value="{{ room.room_code }}" required>
+        <label>Building</label>
+        <select name="building_id" required>
+        {% for building in buildings %}
+        <option value="{{ building.building_id }}"
+        {% if building.building_id == room.building_id %}selected{% endif %}>
+        {{ building.building_initials }} - {{ building.building_name }}
+        </option>
+        {% endfor %}
+        </select>
+        <button type="submit">Update</button>
+        <button type="submit" name="delete" value="1">Delete</button>
+    </form>
+{% endfor %}
+
+    <form method="POST" action="php/dashboard/rooms.php">
+        <label>Room Code</label>
+        <input type="text" name="room_code" required>
+        <label>Building</label>
+        <select name="building_id" required>
+        {% for building in buildings %}
+        <option value="{{ building.building_id }}">
+        {{ building.building_initials }} - {{ building.building_name }}
+        </option>
+        {% endfor %}
+        </select>
+        <button type="submit">Create</button>
+    </form>
+
+<h2>Campus Opening Times</h2>
+
+{% for campus in campus_times %}
+    <form method="POST" action="php/dashboard/campus-times.php">
+        <input type="hidden" name="id" value="{{ campus.id }}">
+        <label>Campus Name</label>
+        <input type="text" name="campus_name" value="{{ campus.campus_name }}" required>
+        <label>Day of Week</label>
+        <select name="day_of_week" required>
+            <option {% if campus.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
+            <option {% if campus.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+            <option {% if campus.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+            <option {% if campus.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
+            <option {% if campus.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
+            <option {% if campus.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
+            <option {% if campus.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
+        </select>
+        <label>Opens At</label>
+        <input type="time" name="opens_at" value="{{ campus.opens_at }}" required>
+        <label>Closes At</label>
+        <input type="time" name="closes_at" value="{{ campus.closes_at }}" required>
+        <label>Note</label>
+        <textarea name="note">{{ campus.note }}</textarea>
+        <button type="submit">Update</button>
+        <button type="submit" name="delete" value="1">Delete</button>
+    </form>
+{% endfor %}
+
+    <form method="POST" action="php/dashboard/campus-times.php">
+        <label>Campus Name</label>
+        <input type="text" name="campus_name" required>
+        <label>Day of Week</label>
+        <select name="day_of_week" required>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+            <option>Sunday</option>
+        </select>
+        <label>Opens At</label>
+        <input type="time" name="opens_at" required>
+        <label>Closes At</label>
+        <input type="time" name="closes_at" required>
+        <label>Note</label>
+        <textarea name="note"></textarea>
+        <button type="submit">Create</button>
+    </form>
+
+{% endif %}
+
+
 {% if permissions.admin or permissions.transport %}
 
 <h2>Transport Routes</h2>

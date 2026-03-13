@@ -89,6 +89,9 @@ $club_data = fetchData($mysqli, "
 $event_data = fetchData($mysqli, "SELECT * FROM events");
 $club_roles = fetchData($mysqli, "SELECT user_id, club_id FROM user_roles WHERE role_id = 3");
 $club_members = fetchData($mysqli, "SELECT club_id, user_id FROM user_clubs");
+$buildings = fetchData($mysqli, "SELECT * FROM buildings");
+$rooms = fetchData($mysqli, "SELECT * FROM rooms");
+$campus_times = fetchData($mysqli, "SELECT * FROM campus_opening_times");
 
 if (!$permissions['admin']) {
     $club_data = array_filter($club_data, function($club) use ($permissions) {
@@ -101,6 +104,10 @@ if (!$permissions['admin']) {
 
     if (!$permissions['gym']) { $gym_data = []; }
     if (!$permissions['transport']) { $transit_data = []; }
+
+    $buildings = [];
+    $rooms = [];
+    $campus_times = [];
 
     if (!$permissions['admin'] && empty($permissions['owned'])) {
     $user_data = [];
@@ -117,6 +124,9 @@ echo $twig->render('dashboard.twig', [
     'event_data' => $event_data,
     'club_roles' => $club_roles,
     'club_members' => $club_members,
+    'buildings' => $buildings,
+    'rooms' => $rooms,
+    'campus_times' => $campus_times,
     'permissions' => $permissions
 ]);
 ?>
