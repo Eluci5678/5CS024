@@ -1,7 +1,7 @@
 <?php
 include("../../credentials/db.php");
 
-$user = $_GET['user'] ?? "";
+$user = $_GET['search'] ?? "";
 
 $stmt = $mysqli->prepare("
     SELECT user_id, name, email

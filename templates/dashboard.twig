@@ -335,9 +335,9 @@
         <label>Description</label>
         <textarea name="description" required>{{ club.description }}</textarea>
         <label>Owner</label>
-        <input type="text" id="owner_display_{{ club.club_id }}" placeholder="Select user" value="{{ club.owner_name }}" readonly>
-        <input type="hidden" name="owner_id" id="owner_id_{{ club.club_id }}" value="{{ club.owner_id }}">
-        <button type="button" data-bs-toggle="modal" data-bs-target="#userSearchModal" data-target-input="{{ club.club_id }}">Search</button>
+        <input type="text" id="owner_{{ club.club_id }}_display" placeholder="Select user" value="{{ club.owner_name }}" readonly>
+        <input type="hidden" name="owner_id" id="owner_{{ club.club_id }}_id">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="user" data-target="owner_{{ club.club_id }}">Search</button>
         <label>Schedule</label>
         <input type="text" name="schedule" value="{{ club.schedule }}" required>
         <button type="submit">Update</button>
@@ -354,9 +354,9 @@
         <label>Description</label>
         <textarea name="description" required></textarea>
         <label>Owner</label>
-        <input type="text" id="owner_display_new" placeholder="Select user" readonly>
-        <input type="hidden" name="owner_id" id="owner_id_new">
-        <button type="button" data-bs-toggle="modal" data-bs-target="#userSearchModal" data-target-input="new">Search</button>
+        <input type="text" id="owner_new_display" placeholder="Select user" readonly>
+        <input type="hidden" name="owner_id" id="owner_new_id">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="user" data-target="owner_new">Search</button>
         <label>Schedule</label>
         <input type="text" name="schedule" required>
         <button type="submit">Create</button>
@@ -377,8 +377,10 @@
         <textarea name="events_description" required>{{ event.events_description }}</textarea>
         <label>Event Type</label>
         <input type="text" name="event_type" value="{{ event.event_type }}" required>
-        <label>Associated Club ID</label>
-        <input type="number" name="associated_club" value="{{ event.associated_club }}" required>
+        <label>Associated Club</label>
+        <input type="hidden" id="associated_club_{{ event.event_id }}_id" name="associated_club" value="{{ event.associated_club }}">
+        <input type="text" id="associated_club_{{ event.event_id }}_display" placeholder="Select club" value="{{ event.associated_club_name }}" readonly>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="club" data-target="associated_club_{{ event.event_id }}">Search</button>
         <label>Start Time</label>
         <input type="datetime-local" name="start_time" value="{{ event.start_time|date('Y-m-d\\TH:i') }}" required>
         <label>End Time</label>
@@ -398,8 +400,10 @@
         <textarea name="events_description" required></textarea>
         <label>Event Type</label>
         <input type="text" name="event_type" required>
-        <label>Associated Club ID</label>
-        <input type="number" name="associated_club" required>
+        <label>Associated Club</label>
+        <input type="hidden" id="associated_club_new_id" name="associated_club">
+        <input type="text" id="associated_club_new_display" placeholder="Select club" readonly>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="club" data-target="associated_club_new">Search</button>
         <label>Start Time</label>
         <input type="datetime-local" name="start_time" required>
         <label>End Time</label>
@@ -471,8 +475,8 @@
 
 </body>
 
-{% include 'modal/user-id-modal.twig' %}
+{% include 'modal/search-modal.twig' %}
 
-<script src="javascript/user-modal.js"></script>
+<script src="javascript/search-modal.js"></script>
 
 {% include 'footer.twig' %}

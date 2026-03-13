@@ -86,7 +86,14 @@ $club_data = fetchData($mysqli, "
     LEFT JOIN users u 
         ON u.user_id = ur.user_id
 ");
-$event_data = fetchData($mysqli, "SELECT * FROM events");
+$event_data = fetchData($mysqli, "
+    SELECT 
+        e.*,
+        c.club_name AS associated_club_name
+    FROM events e
+    LEFT JOIN clubs c 
+        ON c.club_id = e.associated_club
+");
 $club_roles = fetchData($mysqli, "SELECT user_id, club_id FROM user_roles WHERE role_id = 3");
 $club_members = fetchData($mysqli, "SELECT club_id, user_id FROM user_clubs");
 $buildings = fetchData($mysqli, "SELECT * FROM buildings");
