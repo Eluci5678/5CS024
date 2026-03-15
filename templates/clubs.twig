@@ -2,20 +2,22 @@
 {% include 'top-bar.twig'%}
 
 <body>
-    <a href="index.php">home</a>
+    <div class="main">
+        <a href="index.php" class="btn btn-primary" style="margin-bottom: 5px;">Home</a>
 
-    {% for row in data %}
-        <div class="event-panel">
-            <a href="club-info.php?id={{ row.club_id }}"><h1>{{ row.club_name }}</h1></a>
-            <p>{{ row.description }}</p>
-            <p>Schedule: {{ row.schedule }}</p>
-            {% if row.joined %}
-                <a class="btn btn-danger" href="php/student/register-item.php?type=club&id={{ row.club_id }}&action=leave" role="button">Leave</a>
-            {% else %}
-                <a class="btn btn-primary" href="php/student/register-item.php?type=club&id={{ row.club_id }}&action=join" role="button">Join</a>
-            {% endif %}
-        </div>
-    {% endfor %}
+        {% for row in data %}
+            <div class="info-panel">
+                <a href="club-info.php?id={{ row.club_id }}" class="title"><h1>{{ row.club_name }}</h1></a>
+                <p>{{ row.description }}</p>
+                <p>Schedule: {{ row.schedule }}</p>
+                {% if row.joined %}
+                    <a class="btn btn-danger" href="php/student/register-item.php?type=club&id={{ row.club_id }}&action=leave" role="button">Leave</a>
+                {% else %}
+                    <a class="btn btn-primary" href="php/student/register-item.php?type=club&id={{ row.club_id }}&action=join" role="button">Join</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
 </body>
 
 {% include 'footer.twig' %}

@@ -2,9 +2,13 @@
 {% include 'top-bar.twig'%}
 
 <body>
-    {% for link in links %}
-        <a href="{{ link.href }}">{{ link.label }}</a>
-    {% endfor %}
+    <div class="main">
+        <div class="index-main">
+            {% for link in links %}
+                <a class="index-panel" href="{{ link.href }}">{{ link.label }}</a>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 
 {% include 'footer.twig' %}

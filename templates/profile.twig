@@ -2,19 +2,22 @@
 {% include 'top-bar.twig' %}
 
 <body>
-    <a href="index.php">home</a>
+    <div class="main">
 
-    <h1>Joined Clubs</h1>
-    {% for club in clubs %}
-        <p>{{ club.club_name }}</p>
-        <p>{{ club.schedule }}</p>
-    {% endfor %}
-    <h1>Joined Events</h1>
-    {% for event in events %}
-        <p>{{ event.title }}</p>
-        <p>Starts: {{event.start_time}}</p>
-        <p>Ends: {{event.end_time}}</p>
-    {% endfor %}
+        <a href="index.php" class="btn btn-primary" style="margin-bottom: 5px;">Home</a>
+
+        <h1>Joined Clubs</h1>
+        {% for club in clubs %}
+            <p>{{ club.club_name }}</p>
+            <p>{{ club.schedule }}</p>
+        {% endfor %}
+        <h1>Joined Events</h1>
+        {% for event in events %}
+            <p>{{ event.title }}</p>
+            <p>Starts: {{event.start_time}}</p>
+            <p>Ends: {{event.end_time}}</p>
+        {% endfor %}
+    </div>
 </body>
 
 {% include 'footer.twig' %}

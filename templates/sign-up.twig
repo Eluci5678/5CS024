@@ -1,8 +1,8 @@
 {% include 'header.twig' %}
 {% include 'top-bar.twig' %}
 
-<div class="MainContent">
-	<div class="login-page">
+<body>
+    <div class="main">
 		<h1>Sign Up</h1>
 		<form action="php/validate-signup.php" method="post">
 
@@ -30,6 +30,6 @@
 			<p>{{warning}}</p>
 		{% endif %}
 	</div>
-</div>
+</body>
 
 {% include 'footer.twig' %}

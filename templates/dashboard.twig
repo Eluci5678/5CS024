@@ -3,480 +3,523 @@
 
 <body>
 
-{% if permissions.admin %}
+<div class="main">
 
-<h2>Upload Attendance</h2>
-
-<form action="php/dashboard/attendance.php" method="POST" enctype="multipart/form-data">
-    <input type="file" name="csv_file" accept=".csv" required>
-    <button type="submit">Upload CSV</button>
-</form>
-{% endif %}
-
-{% if permissions.admin %}
-<h2>Users</h2>
-
-{% for user in user_data %}
-<form method="POST" action="php/dashboard/user.php">
-    <input type="hidden" name="id" value="{{ user.user_id }}" required>
-    <label>Username</label>
-    <input type="text" name="username" value="{{ user.name }}" required>
-    <label>Email</label>
-    <input type="email" name="email" value="{{ user.email }}" required>
-    <label>New Password</label>
-    <input type="password" name="password" placeholder="leave blank to keep password">
-    <label>Permissions</label>
-    <label>
-        <input type="checkbox" name="roles[]" value="1"
-        {% if '1' in user.roles|split(',') %}checked{% endif %}>
-        Admin
-    </label>
-    <label>
-        <input type="checkbox" name="roles[]" value="4"
-        {% if '4' in user.roles|split(',') %}checked{% endif %}>
-        Gym
-    </label>
-    <label>
-        <input type="checkbox" name="roles[]" value="5"
-        {% if '5' in user.roles|split(',') %}checked{% endif %}>
-        Transport
-    </label>
-    <button type="submit">Update User</button>
-    <button type="submit" name="delete" value="1">Delete</button>
-</form>
-{% endfor %}
-
-    <form method="POST" action="php/dashboard/user.php">
-        <label>Username</label>
-        <input type="text" name="username" required>
-        <label>Email</label>
-        <input type="email" name="email" required>
-        <label>Password</label>
-        <input type="password" name="password" required>
-        <button type="submit">Create User</button>
-    </form>
-
-{% endif %}
-
-{% if permissions.admin %}
-
-<h2>Buildings</h2>
-
-{% for building in buildings %}
-    <form method="POST" action="php/dashboard/buildings.php">
-        <input type="hidden" name="id" value="{{ building.building_id }}">
-        <label>Building Initials</label>
-        <input type="text" name="building_initials" value="{{ building.building_initials }}" required>
-        <label>Building Name</label>
-        <input type="text" name="building_name" value="{{ building.building_name }}" required>
-        <label>Campus Location</label>
-        <input type="text" name="campus_location" value="{{ building.campus_location }}" required>
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-
-{% endfor %}
-
-    <form method="POST" action="php/dashboard/buildings.php">
-        <label>Building Initials</label>
-        <input type="text" name="building_initials" required>
-        <label>Building Name</label>
-        <input type="text" name="building_name" required>
-        <label>Campus Location</label>
-        <input type="text" name="campus_location" required>
-        <button type="submit">Create</button>
-    </form>
-
-<h2>Rooms</h2>
-
-{% for room in rooms %}
-    <form method="POST" action="php/dashboard/rooms.php">
-        <input type="hidden" name="id" value="{{ room.room_id }}">
-        <label>Room Code</label>
-        <input type="text" name="room_code" value="{{ room.room_code }}" required>
-        <label>Building</label>
-        <select name="building_id" required>
-        {% for building in buildings %}
-        <option value="{{ building.building_id }}"
-        {% if building.building_id == room.building_id %}selected{% endif %}>
-        {{ building.building_initials }} - {{ building.building_name }}
-        </option>
-        {% endfor %}
-        </select>
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-{% endfor %}
-
-    <form method="POST" action="php/dashboard/rooms.php">
-        <label>Room Code</label>
-        <input type="text" name="room_code" required>
-        <label>Building</label>
-        <select name="building_id" required>
-        {% for building in buildings %}
-        <option value="{{ building.building_id }}">
-        {{ building.building_initials }} - {{ building.building_name }}
-        </option>
-        {% endfor %}
-        </select>
-        <button type="submit">Create</button>
-    </form>
-
-<h2>Campus Opening Times</h2>
-
-{% for campus in campus_times %}
-    <form method="POST" action="php/dashboard/campus-times.php">
-        <input type="hidden" name="id" value="{{ campus.id }}">
-        <label>Campus Name</label>
-        <input type="text" name="campus_name" value="{{ campus.campus_name }}" required>
-        <label>Day of Week</label>
-        <select name="day_of_week" required>
-            <option {% if campus.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
-            <option {% if campus.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
-            <option {% if campus.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
-            <option {% if campus.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
-            <option {% if campus.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
-            <option {% if campus.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
-            <option {% if campus.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
-        </select>
-        <label>Opens At</label>
-        <input type="time" name="opens_at" value="{{ campus.opens_at }}" required>
-        <label>Closes At</label>
-        <input type="time" name="closes_at" value="{{ campus.closes_at }}" required>
-        <label>Note</label>
-        <textarea name="note">{{ campus.note }}</textarea>
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-{% endfor %}
-
-    <form method="POST" action="php/dashboard/campus-times.php">
-        <label>Campus Name</label>
-        <input type="text" name="campus_name" required>
-        <label>Day of Week</label>
-        <select name="day_of_week" required>
-            <option>Monday</option>
-            <option>Tuesday</option>
-            <option>Wednesday</option>
-            <option>Thursday</option>
-            <option>Friday</option>
-            <option>Saturday</option>
-            <option>Sunday</option>
-        </select>
-        <label>Opens At</label>
-        <input type="time" name="opens_at" required>
-        <label>Closes At</label>
-        <input type="time" name="closes_at" required>
-        <label>Note</label>
-        <textarea name="note"></textarea>
-        <button type="submit">Create</button>
-    </form>
-
-{% endif %}
-
-
-{% if permissions.admin or permissions.transport %}
-
-<h2>Transport Routes</h2>
-
-    {% for transit in transit_data %}
-    <form method="POST" action="php/dashboard/transport.php">
-        <input type="hidden" name="id" value="{{ transit.transit_id }}">
-        <label>Route Name</label>
-        <input type="text" name="route_name" value="{{ transit.route_name }}" required>
-        <label>Schedule</label>
-        <input type="text" name="schedule" value="{{ transit.schedule }}" required>
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-    {% endfor %}
-
-    <form method="POST" action="php/dashboard/transport.php">
-        <label>Route Name</label>
-        <input type="text" name="route_name" required>
-        <label>Schedule</label>
-        <input type="text" name="schedule" required>
-        <button type="submit">Create</button>
-    </form>
-
-{% endif %}
-
-{% if permissions.admin or permissions.gym %}
-
-<h2>Gym Opening Times</h2>
-
-    {% for gym in gym_data %}
-    <form method="POST" action="php/dashboard/gym-times.php">
-        <input type="hidden" name="id" value="{{ gym.id }}">
-        <label>Campus Name</label>
-        <input type="text" name="campus_name" value="{{ gym.campus_name }}" required>
-
-        <label>Day of Week</label>
-        <select name="day_of_week" required>
-            <option value="">Select</option>
-            <option {% if gym.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
-            <option {% if gym.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
-            <option {% if gym.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
-            <option {% if gym.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
-            <option {% if gym.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
-            <option {% if gym.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
-            <option {% if gym.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
-        </select>
-
-        <label>Opens At</label>
-        <input type="time" name="opens_at" value="{{ gym.opens_at }}" required>
-        <label>Closes At</label>
-        <input type="time" name="closes_at" value="{{ gym.closes_at }}" required>
-        <label>Note</label>
-        <textarea name="note">{{ gym.note }}</textarea>
-        <label>Source Reference</label>
-        <input type="text" name="source_ref" value="{{ gym.source_ref }}">
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-    {% endfor %}
-
-    <form method="POST" action="php/dashboard/gym-times.php">
-        <label>Campus Name</label>
-        <input type="text" name="campus_name" required>
-        <label>Day of Week</label>
-        <select name="day_of_week" required>
-            <option value="">Select</option>
-            <option>Monday</option>
-            <option>Tuesday</option>
-            <option>Wednesday</option>
-            <option>Thursday</option>
-            <option>Friday</option>
-            <option>Saturday</option>
-            <option>Sunday</option>
-        </select>
-        <label>Opens At</label>
-        <input type="time" name="opens_at" required>
-        <label>Closes At</label>
-        <input type="time" name="closes_at" required>
-        <label>Note</label>
-        <textarea name="note"></textarea>
-        <label>Source Reference</label>
-        <input type="text" name="source_ref">
-        <button type="submit">Create</button>
-    </form>
-
-<h2>Gym Classes</h2>
-
-    {% for class in gym_classes %}
-    <form method = "POST" action="php/dashboard/gym-classes.php">
-        <input type="hidden" name="id" value="{{ class.id }}">
-        <label>Class Date</label>
-        <input type="date" name="class_date" value="{{ class.class_date|date('Y-m-d') }}" required>
-        <label>Day of Week</label>
-        <select name="day_of_week" required>
-            <option value="">Select</option>
-            <option {% if class.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
-            <option {% if class.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
-            <option {% if class.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
-            <option {% if class.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
-            <option {% if class.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
-            <option {% if class.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
-            <option {% if class.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
-        </select>
-        <label>Class Name</label>
-        <input type="text" name="class_name" value="{{ class.class_name }}" required>
-        <label>Start Time</label>
-        <input type="time" name="start_time" value="{{ class.start_time }}" required>
-        <label>End Time</label>
-        <input type="time" name="end_time" value="{{ class.end_time }}" required>
-        <label>Campus</label>
-        <input type="text" name="campus_name" value="{{ class.campus_name }}" required>
-        <label>Location</label>
-        <input type="text" name="location" value="{{ class.location }}" required>
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-    {% endfor %}
-
-        <form method = "POST" action="php/dashboard/gym-classes.php">
-        <label>Class Date</label>
-        <input type="date" name="class_date" required>
-        <label>Day of Week</label>
-        <select name="day_of_week" required>
-            <option value="">Select</option>
-            <option>Monday</option>
-            <option>Tuesday</option>
-            <option>Wednesday</option>
-            <option>Thursday</option>
-            <option>Friday</option>
-            <option>Saturday</option>
-            <option>Sunday</option>
-        </select>
-        <label>Class Name</label>
-        <input type="text" name="class_name" required>
-        <label>Start Time</label>
-        <input type="time" name="start_time" required>
-        <label>End Time</label>
-        <input type="time" name="end_time" required>
-        <label>Campus</label>
-        <input type="text" name="campus_name" required>
-        <label>Location</label>
-        <input type="text" name="location" required>
-        <button type="submit">Create</button>
-    </form>
-
-{% endif %}
-
-{% if permissions.admin or permissions.owned|length > 0 or permissions['co-owned']|length > 0 %}
-
-<h2>Clubs</h2>
-
-    {% for club in club_data %}
-    <form method="POST" action="php/dashboard/club.php">
-        <input type="hidden" name="id" value="{{ club.club_id }}">
-        <label>Club Name</label>
-        <input type="text" name="club_name" value="{{ club.club_name }}" required>
-        <label>Description</label>
-        <textarea name="description" required>{{ club.description }}</textarea>
-        <label>Owner</label>
-        <input type="text" id="owner_{{ club.club_id }}_display" placeholder="Select user" value="{{ club.owner_name }}" readonly>
-        <input type="hidden" name="owner_id" id="owner_{{ club.club_id }}_id">
-        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="user" data-target="owner_{{ club.club_id }}">Search</button>
-        <label>Schedule</label>
-        <input type="text" name="schedule" value="{{ club.schedule }}" required>
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-    {% endfor %}
-
-{% endif %}
-{% if permissions.admin %}
-
-    <form method="POST" action="php/dashboard/club.php">
-        <label>Club Name</label>
-        <input type="text" name="club_name" required>
-        <label>Description</label>
-        <textarea name="description" required></textarea>
-        <label>Owner</label>
-        <input type="text" id="owner_new_display" placeholder="Select user" readonly>
-        <input type="hidden" name="owner_id" id="owner_new_id">
-        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="user" data-target="owner_new">Search</button>
-        <label>Schedule</label>
-        <input type="text" name="schedule" required>
-        <button type="submit">Create</button>
-    </form>
-
-{% endif %}
-
-{% if permissions.admin or permissions.owned|length > 0 or permissions['co-owned']|length > 0 %}
-
-<h2>Events</h2>
-
-    {% for event in event_data %}
-    <form method="POST" action="php/dashboard/event.php">
-        <input type="hidden" name="id" value="{{ event.event_id }}">
-        <label>Title</label>
-        <input type="text" name="title" value="{{ event.title }}" required>
-        <label>Description</label>
-        <textarea name="events_description" required>{{ event.events_description }}</textarea>
-        <label>Event Type</label>
-        <input type="text" name="event_type" value="{{ event.event_type }}" required>
-        <label>Associated Club</label>
-        <input type="hidden" id="associated_club_{{ event.event_id }}_id" name="associated_club" value="{{ event.associated_club }}">
-        <input type="text" id="associated_club_{{ event.event_id }}_display" placeholder="Select club" value="{{ event.associated_club_name }}" readonly>
-        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="club" data-target="associated_club_{{ event.event_id }}">Search</button>
-        <label>Start Time</label>
-        <input type="datetime-local" name="start_time" value="{{ event.start_time|date('Y-m-d\\TH:i') }}" required>
-        <label>End Time</label>
-        <input type="datetime-local" name="end_time" value="{{ event.end_time|date('Y-m-d\\TH:i') }}" required>
-        <button type="submit">Update</button>
-        <button type="submit" name="delete" value="1">Delete</button>
-    </form>
-    {% endfor %}
-
-{% endif %}
-{% if permissions.admin %}
-
-    <form method="POST" action="php/dashboard/event.php">
-        <label>Title</label>
-        <input type="text" name="title" required>
-        <label>Description</label>
-        <textarea name="events_description" required></textarea>
-        <label>Event Type</label>
-        <input type="text" name="event_type" required>
-        <label>Associated Club</label>
-        <input type="hidden" id="associated_club_new_id" name="associated_club">
-        <input type="text" id="associated_club_new_display" placeholder="Select club" readonly>
-        <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="club" data-target="associated_club_new">Search</button>
-        <label>Start Time</label>
-        <input type="datetime-local" name="start_time" required>
-        <label>End Time</label>
-        <input type="datetime-local" name="end_time" required>
-        <button type="submit">Create</button>
-    </form>
-
-{% endif %}
-
-{% if permissions.admin or permissions.owned|length > 0 %}
-
-<h2>Club Role Assignment</h2>
-
-{% for club in club_data %}
-{% if permissions.admin or club.club_id in permissions.owned %}
-
-<form method="POST" action="php/dashboard/club-roles.php">
-
-<h3>{{ club.club_name }}</h3>
-
-<input type="hidden" name="club_id" value="{{ club.club_id }}">
-
-<strong>Owner</strong>
-<br>
-
-{% for user in user_data %}
-    {% if user.user_id == club.owner_id %}
-        {{ user.name }}
-        <br>
+<ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+    {% if permissions.admin %}
+    <li class="nav-item">
+        <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">Users</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" id="buildings-tab" data-bs-toggle="tab" data-bs-target="#buildings" type="button" role="tab">Buildings & Rooms</button>
+    </li>
     {% endif %}
-{% endfor %}
 
-<strong>Set Co-Owners</strong>
-<br>
+    {% if permissions.admin or permissions.gym %}
+    <li class="nav-item">
+        <button class="nav-link" id="gym-tab" data-bs-toggle="tab" data-bs-target="#gym" type="button" role="tab">Gym</button>
+    </li>
+    {% endif %}
 
-{% for member in club_members %}
-    {% if member.club_id == club.club_id %}
+    {% if permissions.admin or permissions.transport %}
+    <li class="nav-item">
+        <button class="nav-link" id="transport-tab" data-bs-toggle="tab" data-bs-target="#transport" type="button" role="tab">Transport</button>
+    </li>
+    {% endif %}
+
+    {% if permissions.admin or permissions.owned|length > 0 or permissions['co-owned']|length > 0 %}
+    <li class="nav-item">
+        <button class="nav-link" id="clubs-tab" data-bs-toggle="tab" data-bs-target="#clubs" type="button" role="tab">Clubs</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab">Events</button>
+    </li>
+    {% endif %}
+</ul>
+
+<div class="tab-content mt-3">
+
+    {% if permissions.admin %}
+    <div class="tab-pane fade show active" id="users" role="tabpanel">
+
+        <h2>Upload Attendance</h2>
+
+        <form action="php/dashboard/attendance.php" method="POST" enctype="multipart/form-data">
+            <input type="file" name="csv_file" accept=".csv" required>
+            <button type="submit">Upload CSV</button>
+        </form>
+
+        <h2>Users</h2>
 
         {% for user in user_data %}
-            {% if user.user_id == member.user_id and user.user_id != club.owner_id %}
+        <form method="POST" action="php/dashboard/user.php">
+            <input type="hidden" name="id" value="{{ user.user_id }}" required>
+            <label>Username</label>
+            <input type="text" name="username" value="{{ user.name }}" required>
+            <label>Email</label>
+            <input type="email" name="email" value="{{ user.email }}" required>
+            <label>New Password</label>
+            <input type="password" name="password" placeholder="leave blank to keep password">
+            <label>Permissions</label>
+            <label>
+                <input type="checkbox" name="roles[]" value="1"
+                {% if '1' in user.roles|split(',') %}checked{% endif %}>
+                Admin
+            </label>
+            <label>
+                <input type="checkbox" name="roles[]" value="4"
+                {% if '4' in user.roles|split(',') %}checked{% endif %}>
+                Gym
+            </label>
+            <label>
+                <input type="checkbox" name="roles[]" value="5"
+                {% if '5' in user.roles|split(',') %}checked{% endif %}>
+                Transport
+            </label>
+            <button type="submit">Update User</button>
+            <button type="submit" name="delete" value="1">Delete</button>
+        </form>
+        {% endfor %}
 
-                {% set checked = false %}
-                {% for role in club_roles %}
-                    {% if role.user_id == user.user_id and role.club_id == club.club_id %}
-                        {% set checked = true %}
+        <form method="POST" action="php/dashboard/user.php">
+            <label>Username</label>
+            <input type="text" name="username" required>
+            <label>Email</label>
+            <input type="email" name="email" required>
+            <label>Password</label>
+            <input type="password" name="password" required>
+            <button type="submit">Create User</button>
+        </form>
+
+    </div>
+    {% endif %}
+
+    {% if permissions.admin %}
+    <div class="tab-pane fade" id="buildings" role="tabpanel">
+
+        <h2>Buildings</h2>
+
+        {% for building in buildings %}
+            <form method="POST" action="php/dashboard/buildings.php">
+                <input type="hidden" name="id" value="{{ building.building_id }}">
+                <label>Building Initials</label>
+                <input type="text" name="building_initials" value="{{ building.building_initials }}" required>
+                <label>Building Name</label>
+                <input type="text" name="building_name" value="{{ building.building_name }}" required>
+                <label>Campus Location</label>
+                <input type="text" name="campus_location" value="{{ building.campus_location }}" required>
+                <button type="submit">Update</button>
+                <button type="submit" name="delete" value="1">Delete</button>
+            </form>
+        {% endfor %}
+
+        <form method="POST" action="php/dashboard/buildings.php">
+            <label>Building Initials</label>
+            <input type="text" name="building_initials" required>
+            <label>Building Name</label>
+            <input type="text" name="building_name" required>
+            <label>Campus Location</label>
+            <input type="text" name="campus_location" required>
+            <button type="submit">Create</button>
+        </form>
+
+        <h2>Rooms</h2>
+
+        {% for room in rooms %}
+            <form method="POST" action="php/dashboard/rooms.php">
+                <input type="hidden" name="id" value="{{ room.room_id }}">
+                <label>Room Code</label>
+                <input type="text" name="room_code" value="{{ room.room_code }}" required>
+                <label>Building</label>
+                <select name="building_id" required>
+                {% for building in buildings %}
+                <option value="{{ building.building_id }}"
+                {% if building.building_id == room.building_id %}selected{% endif %}>
+                {{ building.building_initials }} - {{ building.building_name }}
+                </option>
+                {% endfor %}
+                </select>
+                <button type="submit">Update</button>
+                <button type="submit" name="delete" value="1">Delete</button>
+            </form>
+        {% endfor %}
+
+        <form method="POST" action="php/dashboard/rooms.php">
+            <label>Room Code</label>
+            <input type="text" name="room_code" required>
+            <label>Building</label>
+            <select name="building_id" required>
+            {% for building in buildings %}
+            <option value="{{ building.building_id }}">
+            {{ building.building_initials }} - {{ building.building_name }}
+            </option>
+            {% endfor %}
+            </select>
+            <button type="submit">Create</button>
+        </form>
+
+        <h2>Campus Opening Times</h2>
+
+        {% for campus in campus_times %}
+            <form method="POST" action="php/dashboard/campus-times.php">
+                <input type="hidden" name="id" value="{{ campus.id }}">
+                <label>Campus Name</label>
+                <input type="text" name="campus_name" value="{{ campus.campus_name }}" required>
+                <label>Day of Week</label>
+                <select name="day_of_week" required>
+                    <option {% if campus.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
+                    <option {% if campus.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+                    <option {% if campus.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+                    <option {% if campus.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
+                    <option {% if campus.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
+                    <option {% if campus.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
+                    <option {% if campus.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
+                </select>
+                <label>Opens At</label>
+                <input type="time" name="opens_at" value="{{ campus.opens_at }}" required>
+                <label>Closes At</label>
+                <input type="time" name="closes_at" value="{{ campus.closes_at }}" required>
+                <label>Note</label>
+                <textarea name="note">{{ campus.note }}</textarea>
+                <button type="submit">Update</button>
+                <button type="submit" name="delete" value="1">Delete</button>
+            </form>
+        {% endfor %}
+
+        <form method="POST" action="php/dashboard/campus-times.php">
+            <label>Campus Name</label>
+            <input type="text" name="campus_name" required>
+            <label>Day of Week</label>
+            <select name="day_of_week" required>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+            </select>
+            <label>Opens At</label>
+            <input type="time" name="opens_at" required>
+            <label>Closes At</label>
+            <input type="time" name="closes_at" required>
+            <label>Note</label>
+            <textarea name="note"></textarea>
+            <button type="submit">Create</button>
+        </form>
+
+    </div>
+    {% endif %}
+
+    {% if permissions.admin or permissions.gym %}
+    <div class="tab-pane fade" id="gym" role="tabpanel">
+
+        <h2>Gym Opening Times</h2>
+
+        {% for gym in gym_data %}
+        <form method="POST" action="php/dashboard/gym-times.php">
+            <input type="hidden" name="id" value="{{ gym.id }}">
+            <label>Campus Name</label>
+            <input type="text" name="campus_name" value="{{ gym.campus_name }}" required>
+
+            <label>Day of Week</label>
+            <select name="day_of_week" required>
+                <option value="">Select</option>
+                <option {% if gym.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
+                <option {% if gym.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+                <option {% if gym.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+                <option {% if gym.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
+                <option {% if gym.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
+                <option {% if gym.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
+                <option {% if gym.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
+            </select>
+
+            <label>Opens At</label>
+            <input type="time" name="opens_at" value="{{ gym.opens_at }}" required>
+            <label>Closes At</label>
+            <input type="time" name="closes_at" value="{{ gym.closes_at }}" required>
+            <label>Note</label>
+            <textarea name="note">{{ gym.note }}</textarea>
+            <label>Source Reference</label>
+            <input type="text" name="source_ref" value="{{ gym.source_ref }}">
+            <button type="submit">Update</button>
+            <button type="submit" name="delete" value="1">Delete</button>
+        </form>
+        {% endfor %}
+
+        <form method="POST" action="php/dashboard/gym-times.php">
+            <label>Campus Name</label>
+            <input type="text" name="campus_name" required>
+            <label>Day of Week</label>
+            <select name="day_of_week" required>
+                <option value="">Select</option>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+            </select>
+            <label>Opens At</label>
+            <input type="time" name="opens_at" required>
+            <label>Closes At</label>
+            <input type="time" name="closes_at" required>
+            <label>Note</label>
+            <textarea name="note"></textarea>
+            <label>Source Reference</label>
+            <input type="text" name="source_ref">
+            <button type="submit">Create</button>
+        </form>
+
+        <h2>Gym Classes</h2>
+
+        {% for class in gym_classes %}
+        <form method="POST" action="php/dashboard/gym-classes.php">
+            <input type="hidden" name="id" value="{{ class.id }}">
+            <label>Class Date</label>
+            <input type="date" name="class_date" value="{{ class.class_date|date('Y-m-d') }}" required>
+            <label>Day of Week</label>
+            <select name="day_of_week" required>
+                <option value="">Select</option>
+                <option {% if class.day_of_week == 'Monday' %}selected{% endif %}>Monday</option>
+                <option {% if class.day_of_week == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+                <option {% if class.day_of_week == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+                <option {% if class.day_of_week == 'Thursday' %}selected{% endif %}>Thursday</option>
+                <option {% if class.day_of_week == 'Friday' %}selected{% endif %}>Friday</option>
+                <option {% if class.day_of_week == 'Saturday' %}selected{% endif %}>Saturday</option>
+                <option {% if class.day_of_week == 'Sunday' %}selected{% endif %}>Sunday</option>
+            </select>
+            <label>Class Name</label>
+            <input type="text" name="class_name" value="{{ class.class_name }}" required>
+            <label>Start Time</label>
+            <input type="time" name="start_time" value="{{ class.start_time }}" required>
+            <label>End Time</label>
+            <input type="time" name="end_time" value="{{ class.end_time }}" required>
+            <label>Campus</label>
+            <input type="text" name="campus_name" value="{{ class.campus_name }}" required>
+            <label>Location</label>
+            <input type="text" name="location" value="{{ class.location }}" required>
+            <button type="submit">Update</button>
+            <button type="submit" name="delete" value="1">Delete</button>
+        </form>
+        {% endfor %}
+
+        <form method="POST" action="php/dashboard/gym-classes.php">
+            <label>Class Date</label>
+            <input type="date" name="class_date" required>
+            <label>Day of Week</label>
+            <select name="day_of_week" required>
+                <option value="">Select</option>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+            </select>
+            <label>Class Name</label>
+            <input type="text" name="class_name" required>
+            <label>Start Time</label>
+            <input type="time" name="start_time" required>
+            <label>End Time</label>
+            <input type="time" name="end_time" required>
+            <label>Campus</label>
+            <input type="text" name="campus_name" required>
+            <label>Location</label>
+            <input type="text" name="location" required>
+            <button type="submit">Create</button>
+        </form>
+
+    </div>
+    {% endif %}
+
+    {% if permissions.admin or permissions.transport %}
+    <div class="tab-pane fade" id="transport" role="tabpanel">
+
+        <h2>Transport Routes</h2>
+
+        {% for transit in transit_data %}
+        <form method="POST" action="php/dashboard/transport.php">
+            <input type="hidden" name="id" value="{{ transit.transit_id }}">
+            <label>Route Name</label>
+            <input type="text" name="route_name" value="{{ transit.route_name }}" required>
+            <label>Schedule</label>
+            <input type="text" name="schedule" value="{{ transit.schedule }}" required>
+            <button type="submit">Update</button>
+            <button type="submit" name="delete" value="1">Delete</button>
+        </form>
+        {% endfor %}
+
+        <form method="POST" action="php/dashboard/transport.php">
+            <label>Route Name</label>
+            <input type="text" name="route_name" required>
+            <label>Schedule</label>
+            <input type="text" name="schedule" required>
+            <button type="submit">Create</button>
+        </form>
+
+    </div>
+    {% endif %}
+
+    {% if permissions.admin or permissions.owned|length > 0 or permissions['co-owned']|length > 0 %}
+    <div class="tab-pane fade" id="clubs" role="tabpanel">
+
+        <h2>Clubs</h2>
+
+        {% for club in club_data %}
+        <form method="POST" action="php/dashboard/club.php">
+            <input type="hidden" name="id" value="{{ club.club_id }}">
+            <label>Club Name</label>
+            <input type="text" name="club_name" value="{{ club.club_name }}" required>
+            <label>Description</label>
+            <textarea name="description" required>{{ club.description }}</textarea>
+            <label>Owner</label>
+            <input type="text" id="owner_{{ club.club_id }}_display" placeholder="Select user" value="{{ club.owner_name }}" readonly>
+            <input type="hidden" name="owner_id" id="owner_{{ club.club_id }}_id">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="user" data-target="owner_{{ club.club_id }}">Search</button>
+            <label>Schedule</label>
+            <input type="text" name="schedule" value="{{ club.schedule }}" required>
+            <button type="submit">Update</button>
+            <button type="submit" name="delete" value="1">Delete</button>
+        </form>
+        {% endfor %}
+
+        {% if permissions.admin %}
+        <form method="POST" action="php/dashboard/club.php">
+            <label>Club Name</label>
+            <input type="text" name="club_name" required>
+            <label>Description</label>
+            <textarea name="description" required></textarea>
+            <label>Owner</label>
+            <input type="text" id="owner_new_display" placeholder="Select user" readonly>
+            <input type="hidden" name="owner_id" id="owner_new_id">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="user" data-target="owner_new">Search</button>
+            <label>Schedule</label>
+            <input type="text" name="schedule" required>
+            <button type="submit">Create</button>
+        </form>
+        {% endif %}
+
+        <h2>Club Role Assignment</h2>
+
+        {% for club in club_data %}
+        {% if permissions.admin or club.club_id in permissions.owned %}
+
+        <form method="POST" action="php/dashboard/club-roles.php">
+
+        <h3>{{ club.club_name }}</h3>
+
+        <input type="hidden" name="club_id" value="{{ club.club_id }}">
+
+        <strong>Owner</strong>
+        <br>
+
+        {% for user in user_data %}
+            {% if user.user_id == club.owner_id %}
+                {{ user.name }}
+                <br>
+            {% endif %}
+        {% endfor %}
+
+        <strong>Set Co-Owners</strong>
+        <br>
+
+        {% for member in club_members %}
+            {% if member.club_id == club.club_id %}
+
+                {% for user in user_data %}
+                    {% if user.user_id == member.user_id and user.user_id != club.owner_id %}
+
+                        {% set checked = false %}
+                        {% for role in club_roles %}
+                            {% if role.user_id == user.user_id and role.club_id == club.club_id %}
+                                {% set checked = true %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <label>
+                            <input type="checkbox" name="coowners[]" value="{{ user.user_id }}" {% if checked %}checked{% endif %}>
+                            {{ user.name }}
+                        </label>
+                        <br>
+
                     {% endif %}
                 {% endfor %}
-
-                <label>
-                    <input type="checkbox" name="coowners[]" value="{{ user.user_id }}" {% if checked %}checked{% endif %}>
-                    {{ user.name }}
-                </label>
-                <br>
 
             {% endif %}
         {% endfor %}
 
+        <button type="submit">Save Co-Owners</button>
+
+        </form>
+
+        {% endif %}
+        {% endfor %}
+
+    </div>
     {% endif %}
-{% endfor %}
 
-<button type="submit">Save Co-Owners</button>
+    {% if permissions.admin or permissions.owned|length > 0 or permissions['co-owned']|length > 0 %}
+    <div class="tab-pane fade" id="events" role="tabpanel">
 
-</form>
+        <h2>Events</h2>
 
-{% endif %}
-{% endfor %}
+        {% for event in event_data %}
+        <form method="POST" action="php/dashboard/event.php">
+            <input type="hidden" name="id" value="{{ event.event_id }}">
+            <label>Title</label>
+            <input type="text" name="title" value="{{ event.title }}" required>
+            <label>Description</label>
+            <textarea name="events_description" required>{{ event.events_description }}</textarea>
+            <label>Event Type</label>
+            <input type="text" name="event_type" value="{{ event.event_type }}" required>
+            <label>Associated Club</label>
+            <input type="hidden" id="associated_club_{{ event.event_id }}_id" name="associated_club" value="{{ event.associated_club }}">
+            <input type="text" id="associated_club_{{ event.event_id }}_display" placeholder="Select club" value="{{ event.associated_club_name }}" readonly>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="club" data-target="associated_club_{{ event.event_id }}">Search</button>
+            <label>Start Time</label>
+            <input type="datetime-local" name="start_time" value="{{ event.start_time|date('Y-m-d\\TH:i') }}" required>
+            <label>End Time</label>
+            <input type="datetime-local" name="end_time" value="{{ event.end_time|date('Y-m-d\\TH:i') }}" required>
+            <button type="submit">Update</button>
+            <button type="submit" name="delete" value="1">Delete</button>
+        </form>
+        {% endfor %}
 
-{% endif %}
+        {% if permissions.admin %}
+        <form method="POST" action="php/dashboard/event.php">
+            <label>Title</label>
+            <input type="text" name="title" required>
+            <label>Description</label>
+            <textarea name="events_description" required></textarea>
+            <label>Event Type</label>
+            <input type="text" name="event_type" required>
+            <label>Associated Club</label>
+            <input type="hidden" id="associated_club_new_id" name="associated_club">
+            <input type="text" id="associated_club_new_display" placeholder="Select club" readonly>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-search-type="club" data-target="associated_club_new">Search</button>
+            <label>Start Time</label>
+            <input type="datetime-local" name="start_time" required>
+            <label>End Time</label>
+            <input type="datetime-local" name="end_time" required>
+            <button type="submit">Create</button>
+        </form>
+        {% endif %}
 
-</body>
+    </div>
+    {% endif %}
+
+</div>
+
+</div>
 
 {% include 'modal/search-modal.twig' %}
 
+<script src="javascript/dashboard-memory.js"></script>
 <script src="javascript/search-modal.js"></script>
 
 {% include 'footer.twig' %}
+
+</body>

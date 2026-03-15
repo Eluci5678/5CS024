@@ -1,0 +1,38 @@
+.main {
+    padding: 5px;
+}
+
+.index-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    gap: 12px;
+}
+
+.index-panel {
+    display: block;
+    background-color: rgb(89, 103, 129);
+    color: white;
+    padding: 30px;
+    width: 90%;
+    max-width: 420px;
+    min-height: 110px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.info-panel {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid rgb(222, 226, 230);
+    border-radius: 5px;
+    max-width: 600px;
+}
+
+.info-panel .title {
+    color: black;
+    text-decoration: none;
+}

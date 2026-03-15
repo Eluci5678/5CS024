@@ -2,34 +2,40 @@
 {% include 'top-bar.twig'%}
 
 <body>
-    <a href="index.php">home</a>
+    <div class="main">
+        <a href="index.php" class="btn btn-primary" style="margin-bottom: 5px;">Home</a>
 
-    <table>
-        <tr>
-            <th>Campus</th>
-            <th>Day</th>
-            <th>Opens</th>
-            <th>Closes</th>
-        </tr>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Campus</th>
+                        <th>Day</th>
+                        <th>Opens</th>
+                        <th>Closes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for time in gym_times %}
+                        <tr>
+                            <td>{{ time.campus_name }}</td>
+                            <td>{{ time.day_of_week }}</td>
+                            <td>{{ time.opens_at }}</td>
+                            <td>{{ time.closes_at }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-        {% for time in gym_times %}
-            <tr>
-                <td>{{ time.campus_name }}</td>
-                <td>{{ time.day_of_week }}</td>
-                <td>{{ time.opens_at }}</td>
-                <td>{{ time.closes_at }}</td>
-            </tr>
+        {% for class in gym_classes %}
+            <div class="info-panel">
+                <h1>{{class.class_name}}</h1>
+                <h3>{{class.campus_name}}</h3>
+                <h5>{{class.location}}</h5>
+                <p>Start: {{class.start_time}}</p>
+                <p>End: {{class.end_time}}</p>
+            </div>
         {% endfor %}
-    </table>
-
-    {% for class in gym_classes %}
-        <h1>{{class.class_name}}</h1>
-        <h3>{{class.campus_name}}</h3>
-        <h5>{{class.location}}</h5>
-        <p>Start: {{class.start_time}}</p>
-        <p>End: {{class.end_time}}</p>
-    {% endfor %}
-
+    </div>
 </body>
 
 {% include 'footer.twig' %}
