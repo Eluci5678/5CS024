@@ -23,11 +23,11 @@ $is_admin = $stmt->get_result()->num_rows > 0;
 $stmt->close();
 $stmt = $mysqli->prepare("
     SELECT 1
-    FROM clubs
-    WHERE club_id = ? AND owner_id = ?
+    FROM user_roles
+    WHERE user_id = ? AND role_id = 2
     LIMIT 1
 ");
-$stmt->bind_param("ii", $club_id, $user['id']);
+$stmt->bind_param("i", $user['id']);
 $stmt->execute();
 $is_owner = $stmt->get_result()->num_rows > 0;
 $stmt->close();
