@@ -51,6 +51,10 @@ if (!$user || empty($user['password_hash']) || !password_verify($password, $user
 $_SESSION['user_id'] = (int)$user['user_id'];
 $_SESSION['username'] = (string)$user['name'];
 
+// Sprint 2: session timeout tracking
+$_SESSION['last_activity'] = time();
+$_SESSION['session_expires'] = 900; // 15 mins
+
 session_regenerate_id(true);
 
 // Redirect to homepage/dashboard
