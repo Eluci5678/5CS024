@@ -26,6 +26,18 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
 
+// Sprint 2: expire inactive sessions
+if (isset($_SESSION['user_id'], $_SESSION['last_activity'], $_SESSION['session_expires'])) {
+    if ((time() - $_SESSION['last_activity']) > $_SESSION['session_expires']) {
+        session_unset();
+        session_destroy();
+        header('Location: ../login.php?error=timeout');
+        exit;
+    }
+
+    $_SESSION['last_activity'] = time();
+}
+
 // ---- CSRF helpers ----
 function csrf_token(): string {
   if (empty($_SESSION['csrf_token'])) {
