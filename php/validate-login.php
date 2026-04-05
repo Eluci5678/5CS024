@@ -6,6 +6,8 @@ require_once __DIR__ . '/../security/bootstrap.php';
 // DB connection (placeholder file is committed; real db.php should be ignored)
 require_once __DIR__ . '/../credentials/db.php'; // or db-blank.php depending on your setup
 
+require_once __DIR__ . '/../security/logger.php';
+
 // Only allow POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../login.php');
@@ -64,6 +66,9 @@ if (!$user || empty($user['password_hash']) || !password_verify($password, $user
     // count failed login attempts
     $_SESSION[$attemptKey]['count']++;
 
+    // log failed login
+    log_event("Failed login attempt for user: $username");
+
     // lock login for a while after too many attempts
     if ($_SESSION[$attemptKey]['count'] >= $maxAttempts) {
         $_SESSION[$attemptKey]['locked_until'] = time() + $lockoutTime;
@@ -78,6 +83,10 @@ if (!$user || empty($user['password_hash']) || !password_verify($password, $user
 // Login success: set session and regenerate session ID
 $_SESSION['user_id'] = (int)$user['user_id'];
 $_SESSION['username'] = (string)$user['name'];
+
+// log successful login
+log_event("Successful login for user: $username");
+
 // reset login attempts after success
 $_SESSION[$attemptKey]['count'] = 0;
 $_SESSION[$attemptKey]['locked_until'] = 0;
