@@ -31,7 +31,7 @@ if (isset($_SESSION['user_id'], $_SESSION['last_activity'], $_SESSION['session_e
     if ((time() - $_SESSION['last_activity']) > $_SESSION['session_expires']) {
         session_unset();
         session_destroy();
-        header('Location: ../login.php?error=timeout');
+        header('Location: /5cs024/login.php?error=timeout');
         exit;
     }
 
