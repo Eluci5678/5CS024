@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/logger.php';
+
 // ---- Basic hardening headers ----
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
@@ -28,12 +30,16 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 
 // Sprint 2: expire inactive sessions
 if (isset($_SESSION['user_id'], $_SESSION['last_activity'], $_SESSION['session_expires'])) {
-    if ((time() - $_SESSION['last_activity']) > $_SESSION['session_expires']) {
-        session_unset();
-        session_destroy();
-        header('Location: /5cs024/login.php?error=timeout');
-        exit;
-    }
+   if ((time() - $_SESSION['last_activity']) > $_SESSION['session_expires']) {
+
+    // Sprint 2: log timeout event
+    log_event("Session timeout for user: " . ($_SESSION['username'] ?? 'unknown'));
+
+    session_unset();
+    session_destroy();
+    header('Location: /5cs024/login.php?error=timeout');
+    exit;
+}
 
     $_SESSION['last_activity'] = time();
 }
