@@ -27,7 +27,7 @@ if ($username === '' || $password === '') {
 
 // Sprint 2: login rate limit setup
 $maxAttempts = 5;
-$lockoutTime = 30; // 30 seconds
+$lockoutTime = 300;
 $attemptKey = 'login_' . strtolower($username);
 
 if (!isset($_SESSION[$attemptKey])) {
@@ -84,7 +84,7 @@ $_SESSION[$attemptKey]['locked_until'] = 0;
 
 // Sprint 2: session timeout tracking
 $_SESSION['last_activity'] = time();
-$_SESSION['session_expires'] = 900; // 15 mins
+$_SESSION['session_expires'] = 30; // 30 seconds 
 
 session_regenerate_id(true);
 
