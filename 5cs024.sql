@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 09, 2026 at 08:12 PM
+-- Generation Time: Apr 09, 2026 at 10:47 PM
 -- Server version: 8.0.45-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -88,7 +88,7 @@ CREATE TABLE `buildings` (
   `building_id` int NOT NULL,
   `building_initials` varchar(10) NOT NULL,
   `building_name` varchar(50) NOT NULL,
-  `campus_location` varchar(50) NOT NULL
+  `campus_location` int UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -96,12 +96,12 @@ CREATE TABLE `buildings` (
 --
 
 INSERT INTO `buildings` (`building_id`, `building_initials`, `building_name`, `campus_location`) VALUES
-(1, 'MI', 'Alan Turing Building', 'City Campus'),
-(2, 'MC', 'Millennium City Building', 'City Campus'),
-(3, 'MD', 'Harrison Learning Centre', 'City Campus'),
-(6, 'MX', 'Housman Building', 'City Campus'),
-(7, 'MA', 'Wulfruna Building', 'City Campus'),
-(9, 'MB', 'Rosalind Franklin Building', 'City Campus');
+(1, 'MI', 'Alan Turing Building', 1),
+(2, 'MC', 'Millennium City Building', 1),
+(3, 'MD', 'Harrison Learning Centre', 1),
+(6, 'MX', 'Housman Building', 1),
+(7, 'MA', 'Wulfruna Building', 1),
+(9, 'MB', 'Rosalind Franklin Building', 1);
 
 -- --------------------------------------------------------
 
@@ -141,19 +141,21 @@ CREATE TABLE `clubs` (
   `club_id` int NOT NULL,
   `club_name` varchar(150) NOT NULL,
   `description` text NOT NULL,
-  `schedule` varchar(255) NOT NULL,
-  `club_creation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `club_creation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start_time` time DEFAULT NULL,
+  `end_time` timestamp NULL DEFAULT NULL,
+  `availability` tinyint UNSIGNED NOT NULL COMMENT '1=Mon, 2=Tue, 4=Wed, 8=Thu, 16=Fri, 32=Sat, 64=Sun'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `clubs`
 --
 
-INSERT INTO `clubs` (`club_id`, `club_name`, `description`, `schedule`, `club_creation_date`) VALUES
-(1, 'Computer Science Society', 'A club for students interested in coding, AI, and tech careers.', 'Every Wednesday 6PM', '2026-02-02 14:38:57'),
-(2, 'Football Club', 'University football training and competitive matches.', 'Tuesdays & Fridays 4PM', '2026-02-02 14:38:57'),
-(3, 'Entrepreneurship Club', 'Helping students build startups and side hustles.', 'Mondays 8PM', '2026-02-02 14:38:57'),
-(10, 'Anime Club', 'Club for anime', 'Fridays 8PM', '2026-03-16 14:05:12');
+INSERT INTO `clubs` (`club_id`, `club_name`, `description`, `club_creation_date`, `start_time`, `end_time`, `availability`) VALUES
+(1, 'Computer Science Society', 'A club for students interested in coding, AI, and tech careers.', '2026-02-02 14:38:57', NULL, NULL, 0),
+(2, 'Football Club', 'University football training and competitive matches.', '2026-02-02 14:38:57', NULL, NULL, 0),
+(3, 'Entrepreneurship Club', 'Helping students build startups and side hustles.', '2026-02-02 14:38:57', NULL, NULL, 0),
+(10, 'Anime Club', 'Club for anime', '2026-03-16 14:05:12', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -305,7 +307,9 @@ CREATE TABLE `notifications` (
   `message_body` text NOT NULL,
   `creation_date` datetime NOT NULL,
   `expiration_date` datetime NOT NULL,
-  `sender_id` int NOT NULL
+  `sender_id` int NOT NULL,
+  `source_id` int DEFAULT NULL,
+  `source_type` enum('club','module','event') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -523,7 +527,8 @@ ALTER TABLE `attendance_records`
 -- Indexes for table `buildings`
 --
 ALTER TABLE `buildings`
-  ADD PRIMARY KEY (`building_id`);
+  ADD PRIMARY KEY (`building_id`),
+  ADD KEY `campus_location` (`campus_location`);
 
 --
 -- Indexes for table `campus_opening_times`
@@ -626,7 +631,8 @@ ALTER TABLE `user_events`
 -- Indexes for table `user_modules`
 --
 ALTER TABLE `user_modules`
-  ADD PRIMARY KEY (`user_id`,`module_id`);
+  ADD PRIMARY KEY (`user_id`,`module_id`),
+  ADD KEY `module_id` (`module_id`);
 
 --
 -- Indexes for table `user_notifications`
@@ -769,6 +775,13 @@ ALTER TABLE `user_clubs`
 ALTER TABLE `user_events`
   ADD CONSTRAINT `fk_user_events_event` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_events_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_modules`
+--
+ALTER TABLE `user_modules`
+  ADD CONSTRAINT `fk_um_module` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_um_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_notifications`
